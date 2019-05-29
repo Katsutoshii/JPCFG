@@ -16,4 +16,3 @@ if __name__ == "__main__":
     ktbparser = KTBParser()
     ktbparser.parse(TREEBANKD / 'aozora_Akutagawa-1922.psd')
     print("Done.")
-    
