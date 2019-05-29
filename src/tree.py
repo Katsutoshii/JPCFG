@@ -4,7 +4,7 @@ Project: src
 File Created: Monday, 27th May 2019 12:09:23 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Monday, 27th May 2019 1:24:32 am
+Last Modified: Tuesday, 28th May 2019 10:55:10 pm
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from typing import List, Any
@@ -33,7 +33,17 @@ class Tree():
             next_level = []
             for node in level:
                 if node.children:
-                    yield node, node.children
+                    yield node
+                next_level += node.children
+            level = next_level
+
+    def leafedges(self):
+        level = [self]
+        while level:
+            next_level = []
+            for node in level:
+                if len(node.children) == 1 and not node.children[0].children:
+                    yield node
                 next_level += node.children
             level = next_level
 
@@ -69,5 +79,5 @@ if __name__ == "__main__":
     """
     tree = Tree.parse(teststr)
     print(tree)
-    for parent, children in tree.iteredges():
-        print(parent.data, [c.data for c in children])
+    for node in tree.iteredges():
+        print(node.data, [c.data for c in node.children])
