@@ -4,7 +4,7 @@ Project: src
 File Created: Wednesday, 22nd May 2019 11:04:27 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Friday, 31st May 2019 3:11:37 pm
+Last Modified: Friday, 31st May 2019 3:56:14 pm
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from typing import Dict, List, Set
@@ -29,10 +29,6 @@ class PCFG():
         self.starts = set()                                         # all possible start variables
 
     def train(self, tree: Tree):
-        # make all nonpreterminals lowercase
-        for node in tree.iternonstems():
-            node.data = node.data.lower()
-        
         # add all nonpreterminals
         for node in tree.iternonstems():
             rule = create_rule(node)
@@ -46,7 +42,6 @@ class PCFG():
         # save this root as a start
         self.starts.add(tree.data)
 
-        
     def add(self, rule: Rule) -> None:
         self.counts[rule] += 1
         self.rules[rule.lhs].add(rule)

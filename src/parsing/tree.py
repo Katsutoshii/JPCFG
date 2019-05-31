@@ -4,10 +4,10 @@ Project: src
 File Created: Monday, 27th May 2019 12:09:23 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Friday, 31st May 2019 2:58:37 pm
+Last Modified: Friday, 31st May 2019 4:15:09 pm
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
-from typing import List, Any, Callable
+from typing import List, Any, Callable, Iterator
 
 class Tree():
     # simple tree data structure for holding the grammer trees
@@ -27,7 +27,7 @@ class Tree():
     def __repr__(self):
         return str(self)
 
-    def iterlevels(self, condition: Callable[['Tree'], bool]):
+    def iterlevels(self, condition: Callable[['Tree'], bool] = lambda x: True) -> Iterator['Tree']:
         level = [self]
         while level:
             next_level: List[Tree] = []
@@ -37,17 +37,17 @@ class Tree():
                 next_level += node.children
             level = next_level
 
-    def iternonstems(self):
-        return self.iterlevels(lambda n: n.children and n.children[0].children)
+    def iternonstems(self) -> Iterator['Tree']:
+        return self.iterlevels(lambda n: bool(n.children and n.children[0].children))
 
-    def iterstems(self):
+    def iterstems(self) -> Iterator['Tree']:
         return self.iterlevels(lambda n: len(n.children) == 1 and not n.children[0].children)
 
-    def iterleaves(self):
+    def iterleaves(self) -> Iterator['Tree']:
         return self.iterlevels(lambda n: not n.children)
 
     @staticmethod
-    def parse(string: str, transform: Callable[[str], str] = None):
+    def parse(string: str):
         tokens = string.split('(')[1:]
         
         root = Tree(tokens[0])
@@ -56,9 +56,7 @@ class Tree():
             current = stack[-1]
             datastr, *endings = token.split(')')
             datastr = datastr.strip()
-            if transform is not None:
-                datastr = transform(datastr)
-                
+
             # if datastr contains a terminal, then split
             # and make the second part the child
             if endings:
@@ -69,7 +67,7 @@ class Tree():
 
             current.children.append(child)
             stack.append(child)
-            for ending in endings:
+            for _ in endings:
                 stack.pop()
         return root
 
@@ -82,5 +80,5 @@ if __name__ == "__main__":
     print(tree)
     # for node in tree.iteredges():
     #     print(node.data, [c.data for c in node.children])
-    for node in tree.iterleaves():
-        print(node.data)
+    for n in tree.iterleaves():
+        print(n.data)
