@@ -4,7 +4,7 @@ Project: src
 File Created: Wednesday, 29th May 2019 11:04:49 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Wednesday, 29th May 2019 5:37:12 pm
+Last Modified: Thursday, 30th May 2019 10:45:25 pm
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from pathlib import Path
@@ -24,11 +24,15 @@ class LarkAdapter():
         self.parser = Lark(self.larkstr(), start='sentence', ambiguity='explicit')
 
     def rules_larkstr(self, lhs: str, rules: List[Rule]) -> str:
+        print("lhs", lhs)
+        is_preterminal = lhs in self.pcfg.preterminals
         return lhs + ': ' + \
-            ' | '.join([' '.join(rule.rhs) for rule in rules 
-                if rule not in self.pcfg.preterminals]) + \
-            ' | '.join([f"\"{rule.rhs[0]}\"" for rule in rules
-                if rule in self.pcfg.preterminals]) + \
+            ' | '.join(
+                [' '.join(
+                    [f"\"{p}\"" for p in rule.rhs]
+                    if is_preterminal else rule.rhs
+                ) for rule in rules]
+            ) + \
             '\n'
         
     def larkstr(self) -> str:

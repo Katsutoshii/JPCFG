@@ -4,7 +4,7 @@ Project: src
 File Created: Monday, 27th May 2019 12:09:23 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Wednesday, 29th May 2019 5:30:06 pm
+Last Modified: Thursday, 30th May 2019 10:53:27 pm
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from typing import List, Any, Callable
@@ -32,7 +32,7 @@ class Tree():
         while level:
             next_level = []
             for node in level:
-                if node.children:
+                if node.children and node.children[0].children:
                     yield node
                 next_level += node.children
             level = next_level

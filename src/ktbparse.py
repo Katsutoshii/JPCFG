@@ -4,7 +4,7 @@ Project: src
 File Created: Wednesday, 22nd May 2019 11:04:36 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Wednesday, 29th May 2019 5:31:06 pm
+Last Modified: Thursday, 30th May 2019 11:20:41 pm
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from pathlib import Path
@@ -14,14 +14,18 @@ from tree import Tree
 from pcfg import PCFG, Rule
 
 class KTBParser():
-    START = 'START'
+    START = 'sentence'
     def __init__(self):
         self.file: TextIO = None
         self.treestr = ""
         
     @staticmethod
-    def replace_hyph(string: str) -> str:
-        return string.replace('-', '_')
+    def replace_invalid(string: str) -> str:
+        return string.\
+            replace('-', '').\
+            replace('_', '').\
+            replace(';', '').\
+            replace('*', 'a')
 
     def parse(self, file: Path):
         with open(file, encoding='utf8') as self.file:
@@ -31,9 +35,10 @@ class KTBParser():
                     if not self.treestr:
                         continue
                     # process all rules in this tree
-                    root = Tree.parse(self.treestr, transform=self.replace_hyph)
+                    root = Tree.parse(self.treestr, transform=self.replace_invalid)
                     root.data = self.START
                     yield root
+
                     self.treestr = ""
                     continue
 
