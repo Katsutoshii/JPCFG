@@ -4,7 +4,7 @@ Project: src
 File Created: Monday, 27th May 2019 12:09:23 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Thursday, 30th May 2019 10:53:27 pm
+Last Modified: Friday, 31st May 2019 2:58:37 pm
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from typing import List, Any, Callable
@@ -27,25 +27,24 @@ class Tree():
     def __repr__(self):
         return str(self)
 
-    def iteredges(self):
+    def iterlevels(self, condition: Callable[['Tree'], bool]):
         level = [self]
         while level:
-            next_level = []
+            next_level: List[Tree] = []
             for node in level:
-                if node.children and node.children[0].children:
+                if condition(node):
                     yield node
                 next_level += node.children
             level = next_level
 
-    def leafedges(self):
-        level = [self]
-        while level:
-            next_level = []
-            for node in level:
-                if len(node.children) == 1 and not node.children[0].children:
-                    yield node
-                next_level += node.children
-            level = next_level
+    def iternonstems(self):
+        return self.iterlevels(lambda n: n.children and n.children[0].children)
+
+    def iterstems(self):
+        return self.iterlevels(lambda n: len(n.children) == 1 and not n.children[0].children)
+
+    def iterleaves(self):
+        return self.iterlevels(lambda n: not n.children)
 
     @staticmethod
     def parse(string: str, transform: Callable[[str], str] = None):
@@ -81,5 +80,7 @@ if __name__ == "__main__":
     """
     tree = Tree.parse(teststr)
     print(tree)
-    for node in tree.iteredges():
-        print(node.data, [c.data for c in node.children])
+    # for node in tree.iteredges():
+    #     print(node.data, [c.data for c in node.children])
+    for node in tree.iterleaves():
+        print(node.data)

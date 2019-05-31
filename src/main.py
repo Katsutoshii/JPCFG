@@ -4,17 +4,18 @@ Project: src
 File Created: Wednesday, 22nd May 2019 11:04:39 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Thursday, 30th May 2019 11:15:26 pm
+Last Modified: Friday, 31st May 2019 3:12:06 pm
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 import sys
-from dirs import TREEBANKD, LARKD
-from pcfg import PCFG
-from ktbparse import KTBParser
-from larkadapter import LarkAdapter
+from tools.dirs import TREEBANKD, LARKD
+from parsing import PCFG, KTBParser, LarkAdapter
+
+# from parser import PCFG, KTBParser, LarkAdapter
+sys.setrecursionlimit(2000)
 
 if __name__ == "__main__":
-    sys.setrecursionlimit(2000)
+    
     ktbparser = KTBParser()
     pcfg = PCFG()
     files = [
@@ -24,7 +25,6 @@ if __name__ == "__main__":
         for tree in ktbparser.parse(file):
             pcfg.train(tree)
     
-    # print("Rules['PP']:", pcfg.prods('PP'))
     print("Starts:", pcfg.starts)
 
     # lark test

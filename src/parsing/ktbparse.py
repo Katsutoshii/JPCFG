@@ -4,14 +4,14 @@ Project: src
 File Created: Wednesday, 22nd May 2019 11:04:36 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Thursday, 30th May 2019 11:20:41 pm
+Last Modified: Friday, 31st May 2019 3:11:49 pm
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from pathlib import Path
 from typing import TextIO
 
-from tree import Tree
-from pcfg import PCFG, Rule
+from .tree import Tree
+from .pcfg import PCFG, Rule
 
 class KTBParser():
     START = 'sentence'

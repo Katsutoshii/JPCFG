@@ -1,10 +1,10 @@
 '''
-File: segmenter.py
+File: __init__.py
 Project: src
 File Created: Friday, 31st May 2019 11:47:22 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Friday, 31st May 2019 2:44:06 pm
+Last Modified: Friday, 31st May 2019 3:04:11 pm
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from collections import defaultdict
@@ -60,9 +60,10 @@ class Segmenter():
             for segps in segpoints
         ]
 
+        # return the segmentation that has the highest probability
         def calc_prob(segmentation):
             prob = self.ngram.log_probability(segmentation)
-            print(segmentation, prob)
+            # print(segmentation, prob)
             return prob
         return max(segmentations, key=calc_prob)
 

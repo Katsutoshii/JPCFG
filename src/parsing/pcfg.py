@@ -4,12 +4,14 @@ Project: src
 File Created: Wednesday, 22nd May 2019 11:04:27 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Thursday, 30th May 2019 10:58:27 pm
+Last Modified: Friday, 31st May 2019 3:11:37 pm
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
-from tree import Tree
 from typing import Dict, List, Set
 from collections import defaultdict, namedtuple
+
+from .tree import Tree
+
 
 Rule = namedtuple("Rule", ["lhs", "rhs"])
 
@@ -27,17 +29,17 @@ class PCFG():
         self.starts = set()                                         # all possible start variables
 
     def train(self, tree: Tree):
-        # make a preterminals lowercase
-        for node in tree.iteredges():
+        # make all nonpreterminals lowercase
+        for node in tree.iternonstems():
             node.data = node.data.lower()
         
         # add all nonpreterminals
-        for node in tree.iteredges():
+        for node in tree.iternonstems():
             rule = create_rule(node)
             self.add(rule)
 
         # add all preterminals
-        for node in tree.leafedges():
+        for node in tree.iterstems():
             rule = create_rule(node)
             self.add_terminal(rule)
         
@@ -53,6 +55,3 @@ class PCFG():
         self.add(rule)
         self.terminals[rule.rhs[0]].add(rule.lhs)
         self.preterminals[rule.lhs].add(rule.rhs[0])
-
-    def prods(self, lhs: str) -> Set[Rule]:
-        return self.rules[lhs]
