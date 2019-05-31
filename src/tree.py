@@ -4,10 +4,10 @@ Project: src
 File Created: Monday, 27th May 2019 12:09:23 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Tuesday, 28th May 2019 10:55:10 pm
+Last Modified: Wednesday, 29th May 2019 5:30:06 pm
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
-from typing import List, Any
+from typing import List, Any, Callable
 
 class Tree():
     # simple tree data structure for holding the grammer trees
@@ -48,7 +48,7 @@ class Tree():
             level = next_level
 
     @staticmethod
-    def parse(string: str):
+    def parse(string: str, transform: Callable[[str], str] = None):
         tokens = string.split('(')[1:]
         
         root = Tree(tokens[0])
@@ -57,7 +57,9 @@ class Tree():
             current = stack[-1]
             datastr, *endings = token.split(')')
             datastr = datastr.strip()
-
+            if transform is not None:
+                datastr = transform(datastr)
+                
             # if datastr contains a terminal, then split
             # and make the second part the child
             if endings:

@@ -4,13 +4,19 @@ Project: src
 File Created: Wednesday, 22nd May 2019 11:04:27 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Tuesday, 28th May 2019 10:57:13 pm
+Last Modified: Wednesday, 29th May 2019 5:10:11 pm
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
+from tree import Tree
 from typing import Dict, List, Set
 from collections import defaultdict, namedtuple
 
 Rule = namedtuple("Rule", ["lhs", "rhs"])
+
+def create_rule(node: Tree):
+    lhs = node.data
+    rhs = [c.data for c in node.children]
+    return Rule(lhs, tuple(rhs))
 
 class PCFG():
     def __init__(self):
@@ -19,6 +25,19 @@ class PCFG():
         self.preterminals: Dict[str, Set[str]] = defaultdict(set)   # terminals to preterminals
         self.starts = set()                                         # all possible start variables
 
+    def train(self, tree: Tree):
+        for node in tree.iteredges():
+            rule = create_rule(node)
+            self.add(rule)
+
+        # add all terminals and preterminals
+        for node in tree.leafedges():
+            rule = create_rule(node)
+            self.add_terminal(rule)
+        
+        # save this root as a start
+        self.starts.add(tree.data)
+        
     def add(self, rule: Rule) -> None:
         self.counts[rule] += 1
         self.rules[rule.lhs].add(rule)
