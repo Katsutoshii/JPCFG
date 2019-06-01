@@ -4,7 +4,7 @@ Project: src
 File Created: Friday, 31st May 2019 11:47:22 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Saturday, 1st June 2019 2:45:27 am
+Last Modified: Saturday, 1st June 2019 3:24:46 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from collections import defaultdict
@@ -34,26 +34,23 @@ class Segmenter():
 
         # loop over all symbols in the unsegmented text
         for i, _ in enumerate(text + " "):
-            # reset the intermediate collections
-            invalid_segs = set()    
-            new_segs = []
+            # reset the intermediate collections   
+            new_segs = segpoints[:]
 
             # for all possible segmentation
             # see if added the next point makes it invalid or completes a token
             for si, segpoint in enumerate(segpoints):
                 current_token = text[segpoint[-1]:i]
                 if current_token in self.vocab:
-                    segpoint.append(i)
                     # if this token is a prefix of another, consider that option
                     if current_token in self.prefixes:
-                        new_segs.append(segpoint[:-1])
+                        new_segs.append(segpoint[:])
+                    segpoint.append(i)
 
                 elif current_token not in self.prefixes:
-                    invalid_segs.add(si)
-                    
-            segpoints = [segpoints[i] for i in range(len(segpoints)) if i not in invalid_segs]
-            
-            segpoints += new_segs
+                    new_segs[si] = []
+
+            segpoints = [s for s in new_segs if s]
 
         segmentations = [
             [text[segps[i]:segps[i + 1]] for i in range(len(segps) - 1)]
