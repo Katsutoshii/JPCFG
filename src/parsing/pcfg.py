@@ -4,11 +4,11 @@ Project: src
 File Created: Wednesday, 22nd May 2019 11:04:27 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Friday, 31st May 2019 11:00:15 pm
+Last Modified: Friday, 31st May 2019 11:04:48 pm
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from typing import Dict, List, Set
-from collections import defaultdict, namedtuple
+from collections import defaultdict, namedtuple, OrderedDict
 
 from .tree import Tree
 
@@ -22,10 +22,10 @@ def create_rule(node: Tree):
 
 class PCFG():
     def __init__(self):
-        self.rules: Dict[str, List[Rule]] = defaultdict(list)         # symbols to their rules
+        self.rules: Dict[str, OrderedDict] = defaultdict(OrderedDict)         # symbols to their rules
         self.counts: Dict[Rule, int] = defaultdict(int)             # rules to their counts
-        self.terminals: Dict[str, List[str]] = defaultdict(list)      # terminals to preterminals
-        self.preterminals: Dict[str, List[str]] = defaultdict(list)   # preterminals to terminals
+        self.terminals: Dict[str, OrderedDict] = defaultdict(OrderedDict)      # terminals to preterminals
+        self.preterminals: Dict[str, OrderedDict] = defaultdict(OrderedDict)   # preterminals to terminals
         self.starts = set()                                         # all possible start variables
 
     def train(self, tree: Tree):
@@ -46,9 +46,9 @@ class PCFG():
 
     def add(self, rule: Rule) -> None:
         self.counts[rule] += 1
-        self.rules[rule.lhs].append(rule)
+        self.rules[rule.lhs][rule] = None
 
     def add_terminal(self, rule: Rule) -> None:
         self.add(rule)
-        self.terminals[rule.rhs[0]].append(rule.lhs)
-        self.preterminals[rule.lhs].append(rule.rhs[0])
+        self.terminals[rule.rhs[0]][rule.lhs] = None
+        self.preterminals[rule.lhs][rule.rhs[0]] = None

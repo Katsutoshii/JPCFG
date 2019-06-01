@@ -1,21 +1,21 @@
-sentence: frag | frag | ipmat | ipmat
-frag: np | np
-np: NPR | NPR | ipemb N | NPR | nml N | pp N | NPR | N | NPR | NPR | N | D N
+sentence: frag | ipmat
+frag: np
+np: NPR | ipemb N | nml N | pp N | N | D N
 NPR: "トロッコ" | "芥川龍之介" | "良平（りょうへい）" | "熱海（あたみ）" | "小田原" | "良平"
 ipmat: pp NPSBJ PU npprd AX AXD PU | pp NPSBJ nptmp pp PU ppprp VB AXD PU
-pp: np P | np P | np P | np P | np P | np P | np P | np P
+pp: np P
 npprd: pp iprel N | numclp
 iprel: NPSBJ npprd AX
 ipemb: pp PU pp NPSBJ VB AXD
 numclp: NUM CL
 nml: conjp np
 conjp: np
-NPSBJ: "n" | "nTn" | "nがn" | "n"
-PU: "、" | "。" | "、" | "、" | "。"
+NPSBJ: "n" | "nTn" | "nがn"
+PU: "、" | "。"
 AX: "だっ" | "の"
-AXD: "た" | "た" | "た"
-P: "は" | "の" | "に" | "が" | "の" | "は" | "へ" | "に" | "を"
-N: "年" | "の" | "間" | "工事" | "軽便鉄道敷設（ふせつ）" | "村外（はず）れ" | "工事"
+AXD: "た"
+P: "は" | "の" | "に" | "が" | "へ" | "を"
+N: "年" | "の" | "間" | "工事" | "軽便鉄道敷設（ふせつ）" | "村外（はず）れ"
 VB: "始まっ" | "行っ" | "見物"
 NUM: "八"
 CL: "つ"
