@@ -4,10 +4,11 @@ Project: src
 File Created: Wednesday, 29th May 2019 11:04:49 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Friday, 31st May 2019 10:46:03 pm
+Last Modified: Friday, 31st May 2019 11:45:10 pm
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from pathlib import Path
+from collections import OrderedDict
 from typing import List, Set
 
 from lark import Lark
@@ -29,7 +30,7 @@ class LarkAdapter():
             parser='earley'
         )
 
-    def rules_larkstr(self, lhs: str, rules: Set[Rule]) -> str:
+    def rules_larkstr(self, lhs: str, rules: OrderedDict) -> str:
         print("lhs", lhs)
         is_preterminal = lhs in self.pcfg.preterminals
         return lhs + ': ' + \

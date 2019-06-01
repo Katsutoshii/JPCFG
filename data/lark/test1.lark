@@ -1,15 +1,14 @@
 sentence: ipmat
-ipmat: ipadv CONJ PU pp NPSBJ pp NPOB1 VB PU
-ipadv: ipadv CONJ PU pp NPSBJ VB P | pp pp NPSBJ VB P | pp NPOB1 VB P
+ipmat: ipadv CONJ PU pp pp NPOB1 VB PU
+ipadv: ipadv CONJ PU pp VB P | pp pp VB P | pp NPOB1 VB P
 pp: np P
 np: NPR | ipemb N | iprel N | pp N | N | D N
 ipemb: ipadv SCON PU cptht VB | VB
-iprel: NPSBJ ADJI
+iprel: ADJI
 cptht: ipsub P
-ipsub: NPSBJ pp NPOB1 VB AX
+ipsub: pp NPOB1 VB AX
 CONJ: "n"
 PU: "――" | "。" | "、"
-NPSBJ: "n" | "nがn" | "nTn" | "npron"
 NPOB1: "nがn" | "nをn" | "nにn"
 VB: "ある" | "しなっ" | "ひらつい" | "動い" | "思う" | "眺（なが）め" | "なり" | "煽（あお）る"
 P: "たり" | "は" | "が" | "に" | "ながら" | "と" | "の" | "を"

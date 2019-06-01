@@ -4,7 +4,7 @@ Project: src
 File Created: Wednesday, 22nd May 2019 11:04:36 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Friday, 31st May 2019 10:23:45 pm
+Last Modified: Friday, 31st May 2019 11:48:25 pm
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from pathlib import Path
@@ -15,6 +15,10 @@ from .tree import Tree
 
 class KTBParser():
     START = 'sentence'
+    IGNORE = {
+        'ID',
+        'NP-SBJ'
+    }
     def __init__(self):
         self.file: TextIO = None
         self.treestr = ""
@@ -49,7 +53,10 @@ class KTBParser():
         
         # make last replacements and ignore nulls
         for node in tree.iterlevels():
-            node.children = [c for c in node.children if c.data != 'ID']
+            node.children = [
+                c for c in node.children 
+                if c.data not in KTBParser.IGNORE
+            ]
             # node.children = [c for c in node.children if '*' not in c.data]
 
         # remove all id rules:
