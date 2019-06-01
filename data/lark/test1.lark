@@ -1,50 +1,29 @@
-sentence: ipmat | frag
+sentence: frag | ipmat
 frag: np
-np: pp pp N | ipemb N | pp N | NPR | conjp PU np | iprel pp N | N | D N | ipemb PRO | nml N | PRO | iprel N | numclp
-NPR: "良平（りょうへい）" | "熱海（あたみ）" | "小田原" | "トロッコ" | "良平" | "芥川龍之介"
-ipmat: pp NPSBJ cptht VB FN AX VB2 PU | pp NPSBJ pp SCON PU ipadv SCON VB P VB2 PU | pp pp NPSBJ npnsbjn PU pp VB FN P VB PU | NPSBJ pp NPOB1 VB PU | NPSBJ CONJ pptmp ipadv PU pp VB VB2 PU | NPSBJ CONJ PU pptpc pp SCON PU pp NPOB1 VB NEG AXD PU | pp NPSBJ advp PU pp NPOB1 VB AXD PU | CONJ pp NPSBJ PU advp pp NPOB1 VB NEG AXD PU | pp NPSBJ pp SCON PU advp pp VB P VB2 PU | pp NPSBJ pp pp VB AXD PU | ipadv CONJ PU pp NPSBJ pp NPOB1 VB PU | pp NPSBJ nptmp pp PU ppprp VB AXD PU | pp NPSBJ PU npprd AX AXD PU | nptmp PU pp NPSBJ npprd AX AXD PU | NPSBJ ppprp VB AXD FN AX VB2 PU | pp NPSBJ pp SCON PU advp pp pp NPOB1 VB AXD PU | pp NPSBJ pp PU pp VB AXD PU | pp NPSBJ npadv PU pp VB P VB2 PU | CONJ pp NPSBJ PU pp SCON PU pp pp NPOB1 VB PU
-pp: advp P | np P P | np P | ipadv P | P | ipadv P P
-npprd: pp N | numclp N | pp iprel N | N | numclp | iprel N
-iprel: NPLOC pp NPSBJ VB P PASS VB2 | NPSBJ pp ADJN AX | NPSBJ advp pp VB | NPSBJ ADJI | NPSBJ npprd AX
-ipemb: NPSBJ pp NPOB1 VB AX | PU NPSBJ pp PU advp pp pp NPOB1 VB VB0 PU | NPOB1 VB | VB | pp PU pp NPSBJ VB AXD | npadv VB AXD | cptht VB | ADJN AX VB2 AX | ipadv SCON PU cptht VB
-numclp: NUM CL | NUM
+np: D N | NPR | pp N | nml N | ipemb N | N
+NPR: "良平（りょうへい）" | "良平" | "トロッコ" | "小田原" | "芥川龍之介" | "熱海（あたみ）"
+ipmat: pp NPSBJ PU npprd AX AXD PU | pp NPSBJ nptmp pp PU ppprp VB AXD PU
+pp: np P
+npprd: pp iprel N | numclp
+iprel: NPSBJ npprd AX
+ipemb: pp PU pp NPSBJ VB AXD
+numclp: NUM CL
 nml: conjp np
-conjp: np | np P
-NPSBJ: "nTn" | "nがn" | "nのn" | "n" | "npron"
-PU: "、――" | "。" | "、" | "――"
-AX: "で" | "と" | "に" | "た" | "たい" | "だ" | "n" | "の" | "だっ"
+conjp: np
+NPSBJ: "nTn" | "nがn" | "n"
+PU: "、" | "。"
+AX: "の" | "だっ"
 AXD: "た"
-P: "で" | "や" | "たり" | "といったところが" | "を" | "まで" | "の" | "に" | "て" | "たら" | "へ" | "は" | "も" | "と" | "が早いか" | "ながら" | "が" | "から" | "さえ"
-N: "工事" | "端（はし）" | "事" | "方" | "終点" | "線路" | "面白さ" | "外（ほか）" | "中" | "年" | "車輪" | "上" | "土工" | "裾（すそ）" | "姿" | "音" | "よう" | "時" | "車台" | "土工たち" | "もと" | "弟" | "けしき" | "下" | "人手" | "夕方" | "トロッコ" | "一しょ" | "初旬" | "間" | "土" | "子供" | "村外れ" | "まま" | "力" | "何処（どこ）" | "の" | "車" | "今度" | "平地" | "軽便鉄道敷設（ふせつ）" | "山" | "隣" | "袢天（はんてん）" | "後（うしろ）" | "村外（はず）れ"
-VB: "いる" | "押し" | "押す" | "眺（なが）め" | "押し押し" | "見物" | "なり" | "煽（あお）る" | "ひらつい" | "佇（たたず）" | "乗れ" | "揃（そろ）う" | "しなっ" | "始まっ" | "ぶちまける" | "借り" | "まわし" | "見" | "る" | "止まっ" | "置い" | "登り" | "行っ" | "出来" | "し" | "運搬" | "並ん" | "乗り" | "下（くだ）" | "来" | "ある" | "走っ" | "思う" | "飛び降りる" | "驚かさ" | "積ん" | "動い" | "来る" | "見え"
-NUM: "二人" | "二" | "三" | "一" | "八"
-CL: "度目" | "度" | "人" | "月" | "つ"
-nptmp: D N | QN
+P: "へ" | "の" | "が" | "に" | "を" | "は"
+N: "の" | "年" | "工事" | "軽便鉄道敷設（ふせつ）" | "間" | "村外（はず）れ"
+VB: "行っ" | "見物" | "始まっ"
+NUM: "八"
+CL: "つ"
+nptmp: QN
 ppprp: ipnml P
-ipnml: pp NPOB1 VB | pp NPOB1 pp VB
+ipnml: pp NPOB1 VB
 QN: "毎日"
-NPOB1: "npron" | "n" | "nがn" | "nをn" | "nにn"
-D: "或（ある）" | "その" | "この" | "そんな"
-advp: ADV | ADJN AX
-FN: "ん" | "の"
-VB2: "しまう" | "来る" | "ある" | "なっ" | "いる" | "始める"
-PRO: "彼" | "其処（そこ）" | "それ"
-VB0: "する"
-ADV: "ひやり" | "ごろり" | "もう" | "唯（ただ）" | "せめて" | "一番" | "突然" | "恐る恐る"
-npnsbjn: numclp
-ipadv: pp PU pp NPOB1 VB P | pp NPOB1 VB NEG | nptmp VB NEG | pp VB | ipadv CONJ PU pp NPSBJ VB P | advp pp NPOB1 VB | pp NPOB1 VB | pp NPOB1 VB P | pp pp NPSBJ VB P | pp NPSBJ VB | pp NPOB1 VB VB FN AX
-SCON: "n"
-NEG: "ずに" | "なかっ" | "ない"
-cptht: ipsub P
-ipsub: NPSBJ pp pp pp PU pp VB AX | NPSBJ ipadv CND | NPSBJ pp NPOB1 VB AX
-CONJ: "が" | "それから" | "n" | "しかし" | "と同時に"
-ADJI: "細い" | "薄明るい"
-ADJN: "泥だらけ" | "同じ" | "自然" | "身軽"
-pptmp: np P
-npadv: ipemb N | N
-CND: "n"
-NPLOC: "nTn"
-PASS: "n"
-pptpc: np P
+NPOB1: "nをn"
+D: "その"
 %import common.WS
 %ignore WS

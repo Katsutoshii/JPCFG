@@ -4,7 +4,7 @@ Project: src
 File Created: Wednesday, 29th May 2019 11:04:49 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Friday, 31st May 2019 3:08:11 pm
+Last Modified: Friday, 31st May 2019 10:46:03 pm
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from pathlib import Path
@@ -22,7 +22,12 @@ class LarkAdapter():
     def __init__(self, pcfg: PCFG):
         self.pcfg = pcfg
         self.savelark(LARKD / 'test1.lark')
-        self.parser = Lark(self.larkstr(), start='sentence', ambiguity='explicit')
+        self.parser = Lark(
+            self.larkstr(),
+            start='sentence',
+            ambiguity='explicit',
+            parser='earley'
+        )
 
     def rules_larkstr(self, lhs: str, rules: Set[Rule]) -> str:
         print("lhs", lhs)
