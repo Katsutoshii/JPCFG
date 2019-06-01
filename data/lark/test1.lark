@@ -1,22 +1,22 @@
-sentence: frag | ipmat
-frag: np
-np: D N | NPR | pp N | nml N | ipemb N | N
-NPR: "良平（りょうへい）" | "良平" | "トロッコ" | "小田原" | "芥川龍之介" | "熱海（あたみ）"
+sentence: frag | frag | ipmat | ipmat
+frag: np | np
+np: NPR | NPR | ipemb N | NPR | nml N | pp N | NPR | N | NPR | NPR | N | D N
+NPR: "トロッコ" | "芥川龍之介" | "良平（りょうへい）" | "熱海（あたみ）" | "小田原" | "良平"
 ipmat: pp NPSBJ PU npprd AX AXD PU | pp NPSBJ nptmp pp PU ppprp VB AXD PU
-pp: np P
+pp: np P | np P | np P | np P | np P | np P | np P | np P
 npprd: pp iprel N | numclp
 iprel: NPSBJ npprd AX
 ipemb: pp PU pp NPSBJ VB AXD
 numclp: NUM CL
 nml: conjp np
 conjp: np
-NPSBJ: "nTn" | "nがn" | "n"
-PU: "、" | "。"
-AX: "の" | "だっ"
-AXD: "た"
-P: "へ" | "の" | "が" | "に" | "を" | "は"
-N: "の" | "年" | "工事" | "軽便鉄道敷設（ふせつ）" | "間" | "村外（はず）れ"
-VB: "行っ" | "見物" | "始まっ"
+NPSBJ: "n" | "nTn" | "nがn" | "n"
+PU: "、" | "。" | "、" | "、" | "。"
+AX: "だっ" | "の"
+AXD: "た" | "た" | "た"
+P: "は" | "の" | "に" | "が" | "の" | "は" | "へ" | "に" | "を"
+N: "年" | "の" | "間" | "工事" | "軽便鉄道敷設（ふせつ）" | "村外（はず）れ" | "工事"
+VB: "始まっ" | "行っ" | "見物"
 NUM: "八"
 CL: "つ"
 nptmp: QN
