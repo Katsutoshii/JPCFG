@@ -1,29 +1,23 @@
-sentence: frag | ipmat
-frag: np
-np: NPR | ipemb N | nml N | pp N | N | D N
-NPR: "トロッコ" | "芥川龍之介" | "良平（りょうへい）" | "熱海（あたみ）" | "小田原" | "良平"
-ipmat: pp NPSBJ PU npprd AX AXD PU | pp NPSBJ nptmp pp PU ppprp VB AXD PU
+sentence: ipmat
+ipmat: ipadv CONJ PU pp NPSBJ pp NPOB1 VB PU
+ipadv: ipadv CONJ PU pp NPSBJ VB P | pp pp NPSBJ VB P | pp NPOB1 VB P
 pp: np P
-npprd: pp iprel N | numclp
-iprel: NPSBJ npprd AX
-ipemb: pp PU pp NPSBJ VB AXD
-numclp: NUM CL
-nml: conjp np
-conjp: np
-NPSBJ: "n" | "nTn" | "nがn"
-PU: "、" | "。"
-AX: "だっ" | "の"
-AXD: "た"
-P: "は" | "の" | "に" | "が" | "へ" | "を"
-N: "年" | "の" | "間" | "工事" | "軽便鉄道敷設（ふせつ）" | "村外（はず）れ"
-VB: "始まっ" | "行っ" | "見物"
-NUM: "八"
-CL: "つ"
-nptmp: QN
-ppprp: ipnml P
-ipnml: pp NPOB1 VB
-QN: "毎日"
-NPOB1: "nをn"
-D: "その"
+np: NPR | ipemb N | iprel N | pp N | N | D N
+ipemb: ipadv SCON PU cptht VB | VB
+iprel: NPSBJ ADJI
+cptht: ipsub P
+ipsub: NPSBJ pp NPOB1 VB AX
+CONJ: "n"
+PU: "――" | "。" | "、"
+NPSBJ: "n" | "nがn" | "nTn" | "npron"
+NPOB1: "nがn" | "nをn" | "nにn"
+VB: "ある" | "しなっ" | "ひらつい" | "動い" | "思う" | "眺（なが）め" | "なり" | "煽（あお）る"
+P: "たり" | "は" | "が" | "に" | "ながら" | "と" | "の" | "を"
+NPR: "良平"
+N: "事" | "線路" | "裾（すそ）" | "よう" | "車台" | "袢天（はんてん）" | "けしき" | "土工"
+SCON: "n"
+ADJI: "細い"
+AX: "たい"
+D: "そんな"
 %import common.WS
 %ignore WS

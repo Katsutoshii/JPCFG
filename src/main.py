@@ -4,7 +4,7 @@ Project: src
 File Created: Wednesday, 22nd May 2019 11:04:39 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Friday, 31st May 2019 10:54:03 pm
+Last Modified: Friday, 31st May 2019 11:28:58 pm
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 import sys
@@ -16,7 +16,7 @@ from parsing import PCFG, KTBParser, LarkAdapter
 
 # from parser import PCFG, KTBParser, LarkAdapter
 sys.setrecursionlimit(2000)
-total = 4
+total = 8
 if __name__ == "__main__":
     
     ktbparser = KTBParser()
@@ -38,6 +38,8 @@ if __name__ == "__main__":
         
         for tree in ktbparser.parse(file):
             count += 1
+            if count != total:
+                continue
             if count > total:
                 break
             pcfg.train(tree)
@@ -53,7 +55,7 @@ if __name__ == "__main__":
 
     # lark test
     la = LarkAdapter(pcfg)
-    for test_tokens in test_tokens_lists[:total]:
+    for test_tokens in [test_tokens_lists[0]]:
         test_spaced = u" ".join(test_tokens)
         print(test_spaced)
         parse = la.parser.parse(test_spaced)
