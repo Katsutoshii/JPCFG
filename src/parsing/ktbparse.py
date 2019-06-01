@@ -4,7 +4,7 @@ Project: src
 File Created: Wednesday, 22nd May 2019 11:04:36 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Saturday, 1st June 2019 12:47:05 am
+Last Modified: Saturday, 1st June 2019 2:34:58 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from pathlib import Path
@@ -20,6 +20,7 @@ class KTBParser():
         'NP-SBJ',
         'NP-OB1',
         'SCON',
+        'NP-LOC'
         # 'NP;*SBJ*',
     }
     def __init__(self):

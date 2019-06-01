@@ -4,7 +4,7 @@ Project: hw2
 File Created: Saturday, 20th April 2019 1:56:15 pm
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Friday, 31st May 2019 2:40:42 pm
+Last Modified: Saturday, 1st June 2019 2:48:50 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from sys import argv
@@ -104,7 +104,10 @@ class NGramsModel():
         
         for symbol, sequence in self.sequences(symbols):
             prob = self.probability(symbol, sequence)
-            total_log_prob += math.log(prob, 2)
+            if prob == 0:
+                total_log_prob += -float('inf')
+            else: 
+                total_log_prob += math.log(prob, 2)
 
         return total_log_prob
 

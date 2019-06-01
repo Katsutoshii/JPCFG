@@ -4,12 +4,13 @@ Project: src
 File Created: Friday, 31st May 2019 11:47:22 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Friday, 31st May 2019 3:04:11 pm
+Last Modified: Saturday, 1st June 2019 2:45:27 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from collections import defaultdict
 from typing import DefaultDict, List, Set
-from ngram import NGramsModel
+
+from .ngram import NGramsModel
 
 class Segmenter():
     def __init__(self):
@@ -50,8 +51,7 @@ class Segmenter():
                 elif current_token not in self.prefixes:
                     invalid_segs.add(si)
                     
-            for invalid_seg in invalid_segs:
-                del segpoints[invalid_seg]
+            segpoints = [segpoints[i] for i in range(len(segpoints)) if i not in invalid_segs]
             
             segpoints += new_segs
 
@@ -66,15 +66,3 @@ class Segmenter():
             # print(segmentation, prob)
             return prob
         return max(segmentations, key=calc_prob)
-
-if __name__ == "__main__":
-    test_tokens = ["the", "dog", "ate", "these", "foods", "se"]
-    test_tokens2 = ["the", "dog", "ate", "the", "se", "foods", "se"]
-    test_text = "".join(test_tokens)
-    seg = Segmenter()
-
-    for training_seq in [test_tokens, test_tokens2, test_tokens2, test_tokens2, test_tokens2, test_tokens2]:
-        seg.train(training_seq)
-        
-    tokens = seg.segment(test_text)
-    print(tokens)
