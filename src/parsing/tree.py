@@ -4,10 +4,11 @@ Project: src
 File Created: Monday, 27th May 2019 12:09:23 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Friday, 31st May 2019 10:15:25 pm
+Last Modified: Saturday, 1st June 2019 12:45:54 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from typing import List, Any, Callable, Iterator
+from lark.tree import Tree as LarkTree
 
 class Tree():
     # simple tree data structure for holding the grammer trees
@@ -77,6 +78,23 @@ class Tree():
             stack.append(child)
             for _ in endings:
                 stack.pop()
+        return root
+
+    @staticmethod
+    def fromlark(larktree: LarkTree) -> 'Tree':
+        root = Tree(larktree.data)
+        stack = [root]
+        larkstack = [larktree]
+        while stack:
+            curr = stack.pop()
+            larkcurr = larkstack.pop()
+            if isinstance(larkcurr, LarkTree):
+                curr.children = [
+                    Tree(lc.data) if isinstance(lc, LarkTree) else str(lc)
+                    for lc in larkcurr.children
+                ]
+                stack += curr.children
+                larkstack += larkcurr.children
         return root
 
 if __name__ == "__main__":
