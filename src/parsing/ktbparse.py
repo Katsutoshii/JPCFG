@@ -4,7 +4,7 @@ Project: src
 File Created: Wednesday, 22nd May 2019 11:04:36 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Friday, 31st May 2019 11:48:25 pm
+Last Modified: Saturday, 1st June 2019 12:01:30 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from pathlib import Path
@@ -17,7 +17,10 @@ class KTBParser():
     START = 'sentence'
     IGNORE = {
         'ID',
-        'NP-SBJ'
+        'NP-SBJ',
+        'NP-OB1',
+        'SCON',
+        # 'NP;*SBJ*',
     }
     def __init__(self):
         self.file: TextIO = None
