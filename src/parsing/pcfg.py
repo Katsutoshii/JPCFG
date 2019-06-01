@@ -4,7 +4,7 @@ Project: src
 File Created: Wednesday, 22nd May 2019 11:04:27 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Friday, 31st May 2019 3:56:14 pm
+Last Modified: Friday, 31st May 2019 9:31:40 pm
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from typing import Dict, List, Set
@@ -24,11 +24,13 @@ class PCFG():
     def __init__(self):
         self.rules: Dict[str, Set[Rule]] = defaultdict(set)         # symbols to their rules
         self.counts: Dict[Rule, int] = defaultdict(int)             # rules to their counts
-        self.terminals: Dict[str, Set[str]] = defaultdict(set)   # terminals to preterminals
+        self.terminals: Dict[str, Set[str]] = defaultdict(set)      # terminals to preterminals
         self.preterminals: Dict[str, Set[str]] = defaultdict(set)   # preterminals to terminals
         self.starts = set()                                         # all possible start variables
 
     def train(self, tree: Tree):
+        # problem: symbols that were nonterminals are getting recreated as preterminals
+        
         # add all nonpreterminals
         for node in tree.iternonstems():
             rule = create_rule(node)

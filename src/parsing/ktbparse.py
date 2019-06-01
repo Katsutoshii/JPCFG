@@ -4,7 +4,7 @@ Project: src
 File Created: Wednesday, 22nd May 2019 11:04:36 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Friday, 31st May 2019 4:33:35 pm
+Last Modified: Friday, 31st May 2019 10:23:45 pm
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from pathlib import Path
@@ -27,18 +27,45 @@ class KTBParser():
             .replace('_', '')\
             .replace(';', '')\
             .replace('+', '')\
-            # .replace('*', 'nul')\
-            # .replace('{', '')\
-            # .replace('}', '')\
-            # .replace('の', 'no')\
-            # .replace('から', 'kara')\
-            # .replace('へ', 'he')\
-            # .replace('に', 'ni')
+            .replace('*', 'n')\
+            .replace('{', '')\
+            .replace('}', '')\
+
+    @staticmethod
+    def replace_invalid_nt(string: str) -> str:
+        return KTBParser.replace_invalid(string)\
+            .replace('の', 'no')\
+            .replace('から', 'kara')\
+            .replace('へ', 'he')\
+            .replace('に', 'ni')
 
     @staticmethod
     def tokens(tree: Tree) -> List[str]:
         return [KTBParser.replace_invalid(node.data) for node in tree.iterleaves()]
 
+    @staticmethod
+    def process(tree: Tree):
+        tree.data = KTBParser.START
+        
+        # make last replacements and ignore nulls
+        for node in tree.iterlevels():
+            node.children = [c for c in node.children if c.data != 'ID']
+            # node.children = [c for c in node.children if '*' not in c.data]
+
+        # remove all id rules:
+        # make all nonpreterminals lowercase
+        for node in tree.iternonstems():
+            node.data = KTBParser.replace_invalid_nt(node.data)
+            node.data = node.data.lower()
+            
+        # make all preterminals uppercase
+        for node in tree.iterstems():
+            node.data = KTBParser.replace_invalid(node.data)
+            node.data = node.data.upper()
+
+        for node in tree.iterleaves():
+            node.data = KTBParser.replace_invalid(node.data)
+            
     def parse(self, file: Path) -> Iterator[Tree]:
         with open(file, encoding='utf8') as self.file:
             for line in self.file:
@@ -47,34 +74,20 @@ class KTBParser():
                     if not self.treestr:
                         continue
                     # process all rules in this tree
-                    root = Tree.parse(self.treestr)
-                    root.data = self.START
-
+                    tree = Tree.parse(self.treestr)
                     
-                    # make all nonpreterminals lowercase
-                    for node in root.iternonstems():
-                        node.data = node.data.lower()
-                        
-                    # make all preterminals uppercase
-                    for node in root.iterstems():
-                        node.data = node.data.upper()
-
-                    # make last replacements and ignore nulls
-                    for node in root.iterlevels():
-                        node.data = self.replace_invalid(node.data)
-                        temp = False
-                        for c in node.children:
-                            if c.data in {'PRN', '*ICH*-1'}:
-                                temp = True
-                        if temp: print(node.children)
-                        node.children = [c for c in node.children if '*' not in c.data]
-                        if temp: 
-                            print(node.children)
-                            print()
-
-                    yield root
+                    self.process(tree)
+                    yield tree
 
                     self.treestr = ""
                     continue
 
                 self.treestr += line
+        try:
+            # process all rules in the last tree
+            tree = Tree.parse(self.treestr)
+            
+            self.process(tree)
+            yield tree
+        except Exception as e:
+            print(e)

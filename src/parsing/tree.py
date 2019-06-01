@@ -4,7 +4,7 @@ Project: src
 File Created: Monday, 27th May 2019 12:09:23 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Friday, 31st May 2019 4:15:09 pm
+Last Modified: Friday, 31st May 2019 10:15:25 pm
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from typing import List, Any, Callable, Iterator
@@ -43,8 +43,16 @@ class Tree():
     def iterstems(self) -> Iterator['Tree']:
         return self.iterlevels(lambda n: len(n.children) == 1 and not n.children[0].children)
 
-    def iterleaves(self) -> Iterator['Tree']:
-        return self.iterlevels(lambda n: not n.children)
+    def iterleaves(self) -> List['Tree']:
+        # depth first in-order traversal returning leaves
+        leaves = []
+        stack = [self]
+        while stack:
+            curr = stack.pop()
+            stack += reversed(curr.children)
+            if not curr.children:
+                leaves.append(curr)
+        return leaves
 
     @staticmethod
     def parse(string: str):
