@@ -4,7 +4,7 @@ Project: src
 File Created: Wednesday, 29th May 2019 11:04:49 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Saturday, 1st June 2019 12:47:18 am
+Last Modified: Saturday, 1st June 2019 12:56:53 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from pathlib import Path
@@ -26,7 +26,7 @@ class LarkAdapter():
         self.parser = Lark(
             self.larkstr(),
             start='sentence',
-            ambiguity='explicit',
+            # ambiguity='explicit',
             parser='earley'
         )
 

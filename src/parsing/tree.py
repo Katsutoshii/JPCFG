@@ -4,10 +4,10 @@ Project: src
 File Created: Monday, 27th May 2019 12:09:23 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Saturday, 1st June 2019 12:45:54 am
+Last Modified: Saturday, 1st June 2019 1:37:37 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
-from typing import List, Any, Callable, Iterator
+from typing import List, Any, Callable, Iterator, Tuple
 from lark.tree import Tree as LarkTree
 
 class Tree():
@@ -55,6 +55,20 @@ class Tree():
                 leaves.append(curr)
         return leaves
 
+    def stems(self) -> List[Tuple['Tree', 'Tree']]:
+        # depth first in-order traversal returning leaves
+        leaves = []
+        parents: dict = {}
+        stack = [self]
+        while stack:
+            curr = stack.pop()
+            stack += reversed(curr.children)
+            for c in curr.children:
+                parents[c] = curr
+            if not curr.children:
+                leaves.append((curr, parents[curr]))
+        return leaves
+
     @staticmethod
     def parse(string: str):
         tokens = string.split('(')[1:]
@@ -90,12 +104,25 @@ class Tree():
             larkcurr = larkstack.pop()
             if isinstance(larkcurr, LarkTree):
                 curr.children = [
-                    Tree(lc.data) if isinstance(lc, LarkTree) else str(lc)
+                    Tree(lc.data) if isinstance(lc, LarkTree) else Tree(lc.type, [Tree(str(lc))])
                     for lc in larkcurr.children
                 ]
                 stack += curr.children
                 larkstack += larkcurr.children
         return root
+
+    # def tolark(self) -> LarkTree:
+    #     stack = [self]
+    #     larkroot = LarkTree(self.data, [])
+    #     larkstack = [larkroot]
+
+    #     while stack:
+    #         curr = stack.pop()
+    #         larkcurr = larkstack.pop()
+
+    #         stack += curr.children
+    #         larkstack += larkcurr.children
+    #     return root
 
 if __name__ == "__main__":
     teststr = """

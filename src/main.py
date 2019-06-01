@@ -4,15 +4,15 @@ Project: src
 File Created: Wednesday, 22nd May 2019 11:04:39 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Saturday, 1st June 2019 12:47:49 am
+Last Modified: Saturday, 1st June 2019 1:24:29 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 import sys
 from typing import List
 from pprint import pprint
 from tools.dirs import TREEBANKD, LARKD, keyaki_trees
+from tools.eval import calculate_accuracy
 from parsing import PCFG, KTBParser, LarkAdapter, Tree
-
 
 # from parser import PCFG, KTBParser, LarkAdapter
 sys.setrecursionlimit(2000)
@@ -25,6 +25,7 @@ if __name__ == "__main__":
 
     test_tokens_lists: List[List[str]] = []
     test_texts: List[str] = []
+    trees = []
     
     files = keyaki_trees('aozora*')
     # files = keyaki_trees('test')
@@ -49,21 +50,23 @@ if __name__ == "__main__":
 
             test_tokens_lists.append(tokens)
             test_texts.append(text)
+            trees.append(tree)
         break
-    
-    print("Starts:", pcfg.starts)
 
     # lark test
     la = LarkAdapter(pcfg)
-    for test_tokens in test_tokens_lists:
-    # for test_tokens in [test_tokens_lists[-1]]:
+    for i, test_tokens in enumerate(test_tokens_lists):
+    # for i, test_tokens in enumerate([test_tokens_lists[-1]]):
         test_spaced = u" ".join(test_tokens)
         print(test_spaced)
         try:
             parse = la.parser.parse(test_spaced)
+            print(parse)
             tree = Tree.fromlark(parse)
-            pprint(tree)
+            print("our tree:", tree)
+            print("true tree:", trees[i])
+            accuracy = calculate_accuracy(tree, trees[i])
+            print("accuracy:", accuracy)
         except Exception as e:
             print("Lark error.")
-            pass
     print("Done.")
