@@ -4,11 +4,11 @@ Project: src
 File Created: Friday, 31st May 2019 11:47:22 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Sunday, 2nd June 2019 4:33:18 am
+Last Modified: Sunday, 2nd June 2019 2:22:58 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from collections import defaultdict
-from typing import DefaultDict, List, Set
+from typing import DefaultDict, List, Set, Tuple
 from tools import f1, log
 
 from .ngram import NGramsModel
@@ -72,10 +72,11 @@ class Segmenter():
     def test(self, text: str, true_tokens: List[str], verbose: bool = False) -> Tuple[float, float, float]:
         for token in true_tokens:
             if token not in self.vocab:
-                print(f"Warning: {token} not in vocab.")
+                log(f"Warning: {token} not in vocab.")
                 
         self.ngram.smooth(true_tokens)
         tokens = self.segment(text)
+        log(" ".join(tokens))
         recall = self.calc_recall(tokens, true_tokens)
         precision = self.calc_precision(tokens, true_tokens)
         fscore = f1(recall, precision)
@@ -88,6 +89,15 @@ class Segmenter():
 
     @staticmethod
     def calc_recall(tokens: List[str], true_tokens: List[str]) -> float:
+        true_tokens_set = set(true_tokens)
+        correct = 0
+        for token in tokens:
+            if token in true_tokens:
+                correct += 1
+        return correct / len(true_tokens)
+
+    @staticmethod
+    def calc_precision(tokens: List[str], true_tokens: List[str]) -> float:
         true_tokens_set = set(true_tokens)
         correct = 0
         for token in tokens:

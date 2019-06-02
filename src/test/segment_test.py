@@ -4,7 +4,7 @@ Project: test
 File Created: Saturday, 1st June 2019 2:24:01 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Sunday, 2nd June 2019 12:59:30 am
+Last Modified: Sunday, 2nd June 2019 2:28:53 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 import sys
@@ -12,6 +12,7 @@ from typing import List
 
 from segmenting import Segmenter
 from tools.dirs import TREEBANKD, LARKD, keyaki_trees
+from tools import log
 from parsing import KTBParser
 sys.setrecursionlimit(2000)
 
@@ -31,11 +32,12 @@ def simple_segment_test():
     print(tokens)
 
 def segment_test():
+    total_r, total_p, total_f = 0, 0, 0
     ktbparser = KTBParser()
     seg = Segmenter()
-    test_ids = set() # set(range(10))
+    test_ids = set(range(10, 20))
     
-    files = keyaki_trees('aozora_D*')
+    files = keyaki_trees('aozora_A*')
     
     token_lists = []
     texts = []
@@ -48,22 +50,24 @@ def segment_test():
             
             token_lists.append(tokens)
             texts.append("".join(tokens))
-            
-            # if i not in test_ids:
-            #     seg.train(tokens)
             seg.train(tokens)
     
     for i in test_ids:
-
-        acc = seg.test(texts[i], token_lists[i])
-        print(acc)
-
-    tests = [
-        ("私は子供がいる", ["私", "は", "子供", "が", "い", "る"]),
-    ]
-    for test in tests:
-        acc = seg.test(test[0], test[1])
-        print(acc)
+        prec, rcll, fscore = seg.test(texts[i], token_lists[i], verbose=True)
+        total_p += prec
+        total_r += rcll
+        total_f += fscore
+    
+    n = len(test_ids)
+    log("Averages (p, r, f):")
+    log(total_p / n, total_r / n, total_f / n)
+    log("Done.")
+    # tests = [
+    #     ("私は子供がいる", ["私", "は", "子供", "が", "い", "る"]),
+    # ]
+    # for test in tests:
+    #     acc = seg.test(test[0], test[1])
+    #     print(acc)
 
 if __name__ == "__main__":
     segment_test()

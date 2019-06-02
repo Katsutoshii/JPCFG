@@ -1,233 +1,5 @@
 Creating Lark Parser...
-Post disambiguation:
-sentence
-  frag
-    np	トロッコ
-
-0.6 0.6 0.6
-
-Post disambiguation:
-sentence
-  frag
-    np	芥川龍之介
-
-1.0 1.0 1.0
-
-Post disambiguation:
-sentence
-  ipmat
-    pp
-      np
-        nml
-          conjp
-            np	小田原
-          np	熱海（あたみ）
-        間
-      に
-    、
-    npprd
-      pp
-        np
-          conjp
-            np
-              iprel
-                npprd	軽便鉄道敷設（ふせつ）
-                の
-              工事
-            が
-          np
-            conjp
-              np
-                ipemb
-                  始まっ
-                  た
-                の
-              は
-            、
-            np	良平（りょうへい）
-        の
-      iprel
-        npprd
-          numclp
-            八
-            つ
-        の
-      年
-    pp
-      ipadv
-        pp
-          np
-            conjp
-              np	小田原
-            np
-              conjp
-                np	熱海（あたみ）
-              np
-                conjp
-                  np	間
-                  に
-                、
-                np	軽便鉄道敷設（ふせつ）
-          の
-        pp
-          np	工事
-          が
-        始まっ
-        た
-      の
-      は
-    、
-    npprd
-      pp
-        np	良平（りょうへい）
-        の
-      iprel
-        npprd
-          numclp
-            八
-            つ
-        の
-      年
-    だっ
-    た
-    。
-
-0.847457627118644 0.9433962264150944 0.8928571428571428
-
-Post disambiguation:
-sentence
-  ipmat
-    pp
-      np	良平
-      は
-    pp
-      np
-        conjp
-          np	毎日
-        np	村外（はず）れ
-      へ
-    、
-    pp
-      np
-        その
-        工事
-      を
-    見物
-    に
-    行っ
-    た
-    。
-
-0.8648648648648649 0.8648648648648649 0.8648648648648649
-
-Post disambiguation:
-sentence
-  ipmat
-    ppprp
-      ipnml
-        pp
-          np
-            pp
-              np
-                conjp
-                  np	工事
-                  を
-                np
-                  ipemb
-                    ――
-                    pp	といったところが
-                    、
-                    advp	唯（ただ）
-                    pp
-                      np	トロッコ
-                      で
-                    pp
-                      np	土
-                      を
-                    運搬
-                    する
-                    ――
-                  それ
-              が
-            面白さ
-          に
-        見
-      に
-    行っ
-    た
-    の
-    で
-    ある
-    。
-
-0.9464285714285714 0.9814814814814815 0.9636363636363636
-
-Lark does not support this sentence structure.
-Post disambiguation:
-sentence
-  ipmat
-    pp
-      np	トロッコ
-      は
-    pp
-      ipadv
-        pp
-          np	山
-          を
-        下（くだ）
-        る
-        の
-        だ
-      から
-    、
-    ipadv
-      pp
-        np	人手
-        を
-      借り
-      ずに
-    走っ
-    て
-    来る
-    。
-
-1.0 1.0 1.0
-
-Lark does not support this sentence structure.
-Lark does not support this sentence structure.
-Post disambiguation:
-sentence
-  ipmat
-    pp
-      ipnml
-        pp
-          np
-            iprel
-              npprd
-                pp
-                  np	トロッコ
-                  は
-                村外れ
-              の
-            平地
-          へ
-        来る
-      と
-    、
-    advp
-      自然
-      と
-    pp
-      np	其処（そこ）
-      に
-    止まっ
-    て
-    しまう
-    。
-
-0.9090909090909091 0.9090909090909091 0.9090909090909091
-
-Lark does not support this sentence structure.
+Input: それから今度はトロッコを押し押し、もと来た山の方へ登り始める。
 Post disambiguation:
 sentence
   ipmat
@@ -243,11 +15,10 @@ sentence
     、
     pp
       np
-        prn
-          np	もと
         iprel
           npprd
             ipemb
+              npadv	もと
               来
               た
             山
@@ -258,8 +29,9 @@ sentence
     始める
     。
 
-0.8666666666666667 0.8863636363636364 0.8764044943820225
+0.9111111111111111 0.9318181818181818 0.9213483146067416
 
+Input: 良平はその時乗れないまでも、押す事さえ出来たらnと思うのである。
 Post disambiguation:
 sentence
   ipmat
@@ -281,7 +53,7 @@ sentence
           、
           pp
             np
-              iprel	押す
+              ipemb	押す
               事
             さえ
           出来
@@ -294,9 +66,11 @@ sentence
     ある
     。
 
-0.9629629629629629 0.9629629629629629 0.9629629629629629
+1.0 1.0 1.0
 
+Input: 或（ある）夕方、――それは二月の初旬だった。
 Lark does not support this sentence structure.
+Input: 良平は二つ下の弟や、弟と同じn年の隣の子供と、トロッコの置いてnある村外れへ行った。
 Post disambiguation:
 sentence
   ipmat
@@ -307,41 +81,44 @@ sentence
             np
               conjp
                 np
-                  prn
-                    np
-                      conjp
-                        np	良平
-                      np
-                        pp	は
-                        numclp
-                          二
-                          つ
-                  iprel
-                    npprd	下
-                    の
-                  弟
-                や
-              、
-              conjp
+                  conjp
+                    np	良平
+                    は
+                  np
+                    numclp
+                      二
+                      つ
+              np
+                conjp
+                  np
+                    iprel
+                      npprd	下
+                      の
+                    弟
+                  や
+                、
                 np
-                  iprel
-                    npprd
-                      pp
-                        np	弟
-                        と
-                      iprel
-                        npprd
-                          iprel
-                            同じ
-                            n
-                          年
-                        の
-                      隣
-                    の
-                  子供
-                と
-              、
-              np	トロッコ
+                  conjp
+                    np	弟
+                  np
+                    conjp
+                      np
+                        iprel
+                          npprd
+                            iprel
+                              npprd
+                                iprel
+                                  pp	と
+                                  同じ
+                                  n
+                                年
+                              の
+                            隣
+                          の
+                        子供
+                      と
+                    、
+                    np	トロッコ
             の
           置い
           て
@@ -353,8 +130,9 @@ sentence
     た
     。
 
-0.8450704225352113 0.9230769230769231 0.8823529411764706
+0.9117647058823529 0.9538461538461539 0.9323308270676691
 
+Input: トロッコは泥だらけになったまま、薄明るい中に並んでいる。
 Post disambiguation:
 sentence
   ipmat
@@ -382,7 +160,9 @@ sentence
 
 0.8947368421052632 0.918918918918919 0.9066666666666667
 
+Input: が、その外（ほか）は何処（どこ）を見ても、土工たちの姿は見えなかった。
 Lark does not support this sentence structure.
+Input: 三人の子供は恐る恐る、一番端（はし）にあるトロッコを押した。
 Post disambiguation:
 sentence
   ipmat
@@ -414,29 +194,34 @@ sentence
 
 0.9285714285714286 0.9285714285714286 0.9285714285714286
 
+Input: トロッコは三人の力が揃（そろ）うと、突然ごろりと車輪をまわした。
 Lark does not support this sentence structure.
+Input: 良平はこの音にひやりとした。
 Post disambiguation:
 sentence
   ipmat
     pp
-      np	良平
-      は
-    pp
       np
-        この
-        音
+        conjp
+          np	良平
+          は
+        np
+          この
+          音
       に
-    pp
-      advp	ひやり
-      と
+    advp	ひやり
+    pp	と
     し
     た
     。
 
-1.0 1.0 1.0
+0.8620689655172413 0.9259259259259259 0.8928571428571429
 
+Input: しかし二度目の車輪の音は、もう彼を驚かさなかった。
 Lark does not support this sentence structure.
+Input: ごろり、ごろり、――トロッコはそう云う音と共に、三人の手にnにn押されながら、そろそろ線路を登って行った。
 Lark does not support this sentence structure.
+Input: その内にかれこれ十間（けん）程来ると、線路の勾配（こうばい）が急になり出した。
 Post disambiguation:
 sentence
   ipmat
@@ -473,29 +258,16 @@ sentence
 
 0.9230769230769231 0.9411764705882353 0.9320388349514563
 
+Input: トロッコも三人の力では、いくら押しても動かなくなった。
 Post disambiguation:
 sentence
   ipmat
     pp
       np
-        pp
-          np	トロッコ
-          も
-        pp
-          np
-            numclp
-              三
-              人
-          の
-        力
-      で
-    pp	は
-    pp
-      np
         conjp
           np	トロッコ
-          も
         np
+          pp	も
           numclp
             三
             人
@@ -520,6 +292,20 @@ sentence
           力
         で
       は
+    pp
+      np
+        pp
+          np	トロッコ
+          も
+        pp
+          np
+            numclp
+              三
+              人
+          の
+        力
+      で
+    pp	は
     、
     pp
       ipadv
@@ -534,9 +320,11 @@ sentence
     た
     。
 
-0.7818181818181819 0.9347826086956522 0.8514851485148516
+0.7678571428571429 0.9347826086956522 0.8431372549019608
 
+Input: どうかすればn車と一しょに、押し戻されそうにもなる事がある。
 Lark does not support this sentence structure.
+Input: 良平はもう好（よ）いと思ったから、年下の二人に合図をした。
 Post disambiguation:
 sentence
   ipmat
@@ -574,6 +362,7 @@ sentence
 
 0.7735849056603774 0.8541666666666666 0.811881188118812
 
+Input: 「さあ、乗ろう！」
 Post disambiguation:
 sentence
   ipimp
@@ -587,11 +376,25 @@ sentence
 
 1.0 1.0 1.0
 
+Input: 彼等は一度に手をはなすと、トロッコの上へ飛び乗った。
 Lark does not support this sentence structure.
+Input: トロッコは最初徐（おもむ）ろに、それから見る見るよく、一息に線路を下（くだ）り出した。
 Lark does not support this sentence structure.
+Input: その途端につき当りの風景は、忽（たちま）ち両側へ分かれるように、ずんずん目の前へ展開して来る。
 Post disambiguation:
 sentence
   ipmat
+    pp
+      np
+        その
+        iprel
+          npprd	途端
+          に
+        つき当り
+      の
+    pp
+      np	風景
+      は
     pp
       np
         その
@@ -604,25 +407,14 @@ sentence
           の
         風景
       は
-    pp
-      np
-        その
-        iprel
-          npprd	途端
-          に
-        つき当り
-      の
-    pp
-      np	風景
-      は
     、
     advp	忽（たちま）ち
     pp
       np
+        prn
+          np	両側
         iprel
-          pp
-            np	両側
-            へ
+          pp	へ
           分かれる
         よう
       に
@@ -641,848 +433,4 @@ sentence
     来る
     。
 
-0.8571428571428571 0.9230769230769231 0.888888888888889
-
-Post disambiguation:
-sentence
-  frag
-    np
-      iprel
-        npprd
-          ipemb
-            pp
-              np
-                prn
-                  np
-                    iprel
-                      npprd
-                        pp
-                          np	顔
-                          に
-                        iprel	当る
-                        薄暮（はくぼ）
-                      の
-                    風
-                  、
-                iprel
-                  npprd	足
-                  の
-                下
-              に
-            躍（おど）る
-          トロッコ
-        の
-      動揺
-    、
-    ――
-
-0.7435897435897436 0.8285714285714286 0.7837837837837838
-
-Post disambiguation:
-sentence
-  ipmat
-    pp
-      np	良平
-      は
-    advp	殆（ほとん）ど
-    pp
-      np	有頂天（うちょうてん）
-      に
-    なっ
-    た
-    。
-
-1.0 1.0 1.0
-
-Post disambiguation:
-sentence
-  ipmat
-    しかし
-    pp
-      np	トロッコ
-      は
-    nptmp
-      pp
-        np
-          conjp
-            np
-              numclp	二
-          np
-            numclp
-              三
-              分
-        の
-      後（のち）
-    、
-    advp	もう
-    pp
-      np
-        iprel
-          npprd	もと
-          の
-        終点
-      に
-    止まっ
-    て
-    い
-    た
-    。
-
-0.7843137254901961 0.9302325581395349 0.851063829787234
-
-Post disambiguation:
-sentence
-  ipimp
-    「
-    さあ
-    、
-    npmsr
-      もう
-      numclp
-        一
-        度
-    押す
-    じゃあ
-    」
-
-1.0 1.0 1.0
-
-Lark does not support this sentence structure.
-Lark does not support this sentence structure.
-Post disambiguation:
-sentence
-  ipmat
-    advp	のみならず
-    pp
-      np	それ
-      は
-    pp
-      ipadv
-        cptht
-          ipsub
-            聞え
-            出し
-            た
-          と
-        思う
-      と
-    、
-    advp
-      急
-      に
-    pp
-      np
-        こう云う
-        怒鳴り声
-      に
-    変っ
-    た
-    。
-
-1.0 1.0 1.0
-
-Post disambiguation:
-sentence
-  frag
-    「
-    np
-      この
-      野郎
-    ！
-
-1.0 1.0 1.0
-
-Post disambiguation:
-sentence
-  cpque
-    ipsub
-      ipadv
-        pp
-          np	誰
-          に
-        断（ことわ）っ
-        て
-      n
-      pp
-        np	トロ
-        に
-      触（さわ）っ
-      た
-    ？
-    」
-
-1.0 1.0 1.0
-
-Lark does not support this sentence structure.
-Post disambiguation:
-sentence
-  ipmat
-    ――
-    nptmp
-      ipemb
-        pp
-          np
-            そう云う
-            姿
-          が
-        pp
-          np	目
-          に
-        はいっ
-        た
-      時
-    、
-    pp
-      np
-        nml
-          conjp
-            np	良平
-          np
-            pp	は
-            年
-        下
-      の
-    pp
-      np
-        pp
-          np
-            numclp	二人
-          と
-        一しょ
-      に
-    ――
-    nptmp
-      ipemb
-        pp
-          np
-            そう云う
-            姿
-          が
-        pp
-          np	目
-          に
-        はいっ
-        た
-      時
-    、
-    pp
-      np	良平
-      は
-    pp
-      np
-        pp
-          np
-            conjp
-              np	年
-            np
-              iprel
-                npprd	下
-                の
-              numclp	二人
-          と
-        一しょ
-      に
-    ――
-    nptmp
-      ipemb
-        pp
-          np
-            そう云う
-            姿
-          が
-        pp
-          np	目
-          に
-        はいっ
-        た
-      時
-    、
-    pp
-      np
-        conjp
-          np
-            pp
-              np	良平
-              は
-            年
-        np
-          iprel
-            npprd	下
-            の
-          numclp	二人
-      と
-    pp
-      np	一しょ
-      に
-    、
-    advp	もう
-    npadv
-      numclp	五六
-      間
-    逃げ出し
-    て
-    い
-    た
-    。
-
-0.8055555555555556 0.90625 0.8529411764705882
-
-Lark does not support this sentence structure.
-Lark does not support this sentence structure.
-Post disambiguation:
-sentence
-  frag
-    np
-      iprel
-        pp
-          np
-            iprel
-              npprd	薄明り
-              の
-            中
-          に
-        仄（ほの）めい
-        た
-      、
-      iprel
-        npprd
-          iprel	小さい
-          黄色
-        の
-      麦藁帽
-    、
-
-0.9 0.8709677419354839 0.8852459016393444
-
-Lark does not support this sentence structure.
-Lark does not support this sentence structure.
-Post disambiguation:
-_ambig
-  sentence
-    ipmat
-      すると
-      pp
-        np
-          prn
-            np	土
-          iprel
-            npprd
-              ipemb
-                pp	を
-                積ん
-                だ
-              トロッコ
-            の
-          外（ほか）
-        に
-      、
-      pp
-        np
-          prn
-            np	枕木（まくらぎ）
-          iprel
-            pp	を
-            積ん
-            だ
-          トロッコ
-        が
-      npnsbjn
-        numclp
-          一
-          輛（りょう）
-      、
-  sentence
-    frag
-      np
-        conjp
-          np
-            iprel
-              npprd
-                iprel
-                  npprd
-                    ipemb
-                      pp
-                        ipnml	する
-                        と
-                      pp
-                        np	土
-                        を
-                      積ん
-                      だ
-                    トロッコ
-                  の
-                外（ほか）
-              に
-            、
-            iprel
-              pp
-                np	枕木（まくらぎ）
-                を
-              積ん
-              だ
-            トロッコ
-          が
-        np
-          numclp
-            一
-            輛（りょう）
-      、
-
-0.5964912280701754 0.918918918918919 0.7234042553191489
-
-Post disambiguation:
-sentence
-  ipmat
-    pp
-      np
-        ipemb
-          pp
-            np
-              pp
-                np	これ
-                は
-              本線
-            に
-          なる
-        筈（はず）
-      の
-    、
-    advp	太い
-    pp
-      np	線路
-      を
-    登っ
-    て
-    来
-    た
-    。
-
-0.8780487804878049 0.8571428571428571 0.8674698795180722
-
-Post disambiguation:
-sentence
-  ipmat
-    pp
-      ipadv
-        pp
-          np
-            この
-            トロッコ
-          を
-        押し
-        て
-        いる
-        の
-      は
-    、
-    ppnsbjn
-      np
-        numclp	二人
-      と
-    npprd
-      pp	も
-      iprel	若い
-      男
-    だっ
-    た
-    。
-
-0.8043478260869565 0.8604651162790697 0.8314606741573034
-
-Lark does not support this sentence structure.
-Post disambiguation:
-sentence
-  ipmat
-    「
-    pp
-      ipadv
-        npprd
-          この
-          人たち
-        n
-      ならば
-    n
-    叱（しか）
-    られ
-    ない
-    」
-
-1.0 1.0 1.0
-
-Post disambiguation:
-sentence
-  ipmat
-    ――
-    pp
-      np	彼
-      は
-    ipadv
-      advp	そう
-      思い
-      ながら
-    、
-    pp
-      np
-        iprel
-          npprd	トロッコ
-          の
-        側（そば）
-      へ
-    駈（か）け
-    て
-    行っ
-    た
-    。
-
-0.9024390243902439 0.925 0.9135802469135802
-
-Post disambiguation:
-sentence
-  frag
-    「
-    np	おじさん
-    。
-
-1.0 1.0 1.0
-
-Post disambiguation:
-sentence
-  cpque
-    ipsub
-      押し
-      て
-      やろ
-      う
-    か
-    ？
-    」
-
-1.0 1.0 1.0
-
-Post disambiguation:
-sentence
-  ipmat
-    pp
-      np
-        iprel
-          pp
-            np
-              prn
-                np
-                  iprel
-                    npprd
-                      その
-                      中
-                    の
-                  numclp
-                    一
-                    人
-              、
-              ――
-              iprel
-                npprd	縞（しま）
-                の
-              シャツ
-            を
-          着
-          て
-          いる
-        男
-      は
-    、
-    pp
-      np
-        prn
-          np
-            prn
-              np
-                ipemb
-                  pp
-                    np
-                      iprel
-                        npprd	俯向（うつむ）き
-                        に
-                      トロッコ
-                    を
-                  押し
-                  た
-                まま
-              、
-            iprel
-              思っ
-              た
-            通り
-        iprel	快い
-        返事
-      を
-    し
-    た
-    。
-
-0.8055555555555556 0.8169014084507042 0.8111888111888113
-
-Post disambiguation:
-sentence
-  cpfinal
-    「
-    ipsub
-      おお
-      、
-      押し
-      て
-      く
-    よう
-    」
-
-1.0 1.0 1.0
-
-Post disambiguation:
-sentence
-  ipmat
-    pp
-      np	良平
-      は
-    pp
-      ipnml
-        pp
-          np
-            iprel
-              npprd
-                numclp	二人
-              の
-            間
-          に
-        はいる
-      と
-    pp
-      np
-        pp
-          np	良平
-          は
-        numclp	二人
-      の
-    pp
-      ipnml
-        pp
-          np	間
-          に
-        はいる
-      と
-    pp
-      np
-        pp
-          np
-            pp
-              np	良平
-              は
-            numclp	二人
-          の
-        間
-      に
-    pp
-      ipnml	はいる
-      と
-    pp
-      ipadv
-        npprd
-          pp
-            np	良平
-            は
-          iprel
-            npprd
-              numclp	二人
-            の
-          間
-        に
-      は
-    pp
-      ipnml	いる
-      と
-    、
-    advp	力一杯
-    押し
-    始め
-    た
-    。
-
-0.7 0.9210526315789473 0.7954545454545453
-
-Post disambiguation:
-sentence
-  cpfinal
-    「
-    ipsub
-      pp
-        np	われ
-        は
-      advp	中中（なかなか）
-      pp
-        np	力
-        が
-      ある
-    な
-    」
-
-1.0 1.0 1.0
-
-Post disambiguation:
-sentence
-  ipmat
-    pp
-      np
-        iprel
-          pp
-            np	他（た）
-            の
-          pp
-            np
-              prn
-                np
-                  numclp
-                    一
-                    人
-              、
-              ――
-              iprel
-                npprd	耳
-                に
-              巻煙草（まきたばこ）
-            を
-          挟（はさ）
-          ん
-          だ
-        男
-      も
-    、
-    advp	こう
-    pp
-      ipnml
-        pp
-          np	良平
-          を
-        褒（ほ）め
-      て
-    くれ
-    た
-    。
-
-0.7666666666666667 0.8679245283018868 0.8141592920353983
-
-Post disambiguation:
-sentence
-  ipmat
-    pp
-      np
-        その
-        内
-      に
-    pp
-      np
-        iprel
-          npprd	線路
-          の
-        勾配
-      は
-    pp
-      np
-        その
-        iprel
-          npprd	内
-          に
-        線路
-      の
-    pp
-      np	勾配
-      は
-    、
-    advp	だんだん
-    楽
-    に
-    なり
-    始め
-    た
-    。
-
-0.85 0.9444444444444444 0.8947368421052632
-
-Post disambiguation:
-sentence
-  ipmat
-    「
-    advp	もう
-    pp
-      ipadv
-        押さ
-        なく
-        と
-      も
-    好（よ）い
-    」
-
-1.0 1.0 1.0
-
-Lark does not support this sentence structure.
-Lark does not support this sentence structure.
-Post disambiguation:
-sentence
-  ipmat
-    pp
-      np	良平
-      は
-    ipadv
-      advp	とうとう
-      こらえ
-      切れ
-      ずに
-    、
-    advp	怯（お）ず怯（お）ず
-    pp
-      np
-        こんな
-        事
-      を
-    尋ね
-    て
-    見
-    た
-    。
-
-1.0 1.0 1.0
-
-Post disambiguation:
-sentence
-  cpque
-    「
-    ipsub
-      ipadv
-        pp
-          np
-            何時（いつ）
-            まで
-          も
-        押し
-        て
-        い
-        て
-      n
-      好（い）い
-    ？
-    」
-
-0.9285714285714286 0.9285714285714286 0.9285714285714286
-
-Creating Lark Parser...
-Post disambiguation:
-sentence
-  frag
-    np	トロッコ
-
-0.6 0.6 0.6
-
-Post disambiguation:
-sentence
-  frag
-    np	芥川龍之介
-
-1.0 1.0 1.0
-
+0.8135593220338984 0.9230769230769231 0.8648648648648649

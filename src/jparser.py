@@ -4,7 +4,7 @@ Project: src
 File Created: Saturday, 1st June 2019 11:26:22 pm
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Sunday, 2nd June 2019 1:39:20 am
+Last Modified: Sunday, 2nd June 2019 2:43:15 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from pathlib import Path
@@ -12,6 +12,7 @@ from typing import List, Union
 
 from parsing import PCFG, KTBParser, LarkAdapter, Tree
 from segmenting import Segmenter
+from tools import log
 
 class JapaneseParser():
     # full parser class
@@ -27,6 +28,7 @@ class JapaneseParser():
 
         # for evaluation
         self.token_lists: List[List[str]] = []
+        self.trees: List[List[Tree]] = []
         self.total_parse_accuracy = 0
         self.total_segment_accuracy = 0
         
@@ -42,12 +44,8 @@ class JapaneseParser():
         # trains the parser on a particular file
         print(f"Parsing file {file.stem}...")
         for i, tree in enumerate(self.ktbparser.parse(file)):
-            self.count += 1
-            if self.count > self.total:
-                break
-                
+            self.trees.append(tree)
             tokens = self.ktbparser.tokens(tree)
-            print(tokens)
 
             for token in tokens:
                 self.vocab.add(token)
@@ -66,6 +64,8 @@ class JapaneseParser():
         larktree = self.larkadapter.parse(tokens)
         return Tree.fromlark(larktree)
 
-    def test(self, text: str, true_tree: Tree) -> float:
+    def test(self, i: int) -> float:
+        text, true_tree = "".join(self.token_lists[i]), self.trees[i]
+        log("Input:", text)
         tokens = self.segmenter.segment(text)
-        return self.larkadapter.test(tokens, true_tree)
+        return self.larkadapter.test(tokens, true_tree, verbose=True)

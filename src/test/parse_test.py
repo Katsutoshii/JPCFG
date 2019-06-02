@@ -4,7 +4,7 @@ Project: test
 File Created: Saturday, 1st June 2019 2:23:28 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Sunday, 2nd June 2019 3:59:15 am
+Last Modified: Sunday, 2nd June 2019 2:58:32 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 import sys
@@ -55,6 +55,7 @@ def parse_test():
     # lark test
     pcfg.calc_probs()
     la = LarkAdapter(pcfg)
+    n = 0
     for i, test_tokens in enumerate(test_tokens_lists):
     # for i, test_tokens in enumerate([test_tokens_lists[-1]]):
         results = la.test(test_tokens, trees[i], verbose=True)
@@ -63,8 +64,10 @@ def parse_test():
             total_p += prec
             total_r += rcll
             total_f += fscore
+            n += 1
             
-    log(total_p, total_r, total_f)
+    log("Averages (p, r, f):")
+    log(total_p / n, total_r / n, total_f / n)
     log("Done.")
 
 if __name__ == "__main__":
