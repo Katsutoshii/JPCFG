@@ -4,7 +4,7 @@ Project: src
 File Created: Wednesday, 29th May 2019 11:04:49 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Sunday, 2nd June 2019 3:55:13 am
+Last Modified: Sunday, 2nd June 2019 4:03:27 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from pathlib import Path
@@ -94,29 +94,31 @@ class LarkAdapter():
 
     @staticmethod
     def calc_precision(tree: Tree, true_tree: Tree) -> float:
-        tree_stems, true_stems = tree.stems(), true_tree.stems()
+        true_ruleset: Set[Rule] = set()
         correct, total = 0, 0
-        for i, (terminal, preterm) in enumerate(tree_stems):
-            true_term, true_preterm = tree_stems[i]
-            if preterm.data == true_preterm.data:
-                correct += 1
+        for node in true_tree.iterlevels():
+            true_ruleset.add(create_rule(node))
             total += 1
+        for node in tree.iterlevels():
+            rule = create_rule(node)
+            if rule in true_ruleset:
+                correct += 1
 
         return correct / total
     
     @staticmethod
     def calc_recall(tree: Tree, true_tree: Tree) -> float:
         true_ruleset: Set[Rule] = set()
+        correct, total = 0, 0
         for node in true_tree.iterlevels():
             true_ruleset.add(create_rule(node))
-        recalled, total = 0, 0
         for node in tree.iterlevels():
             rule = create_rule(node)
             if rule in true_ruleset:
-                recalled += 1
+                correct += 1
             total += 1
 
-        return recalled / total
+        return correct / total
 
 
     def parse(self, tokens: List[str]) -> Optional[LarkTree]:

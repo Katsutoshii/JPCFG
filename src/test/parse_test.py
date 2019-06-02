@@ -4,12 +4,13 @@ Project: test
 File Created: Saturday, 1st June 2019 2:23:28 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Sunday, 2nd June 2019 3:50:28 am
+Last Modified: Sunday, 2nd June 2019 3:59:15 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 import sys
 from typing import List
 from tools.dirs import TREEBANKD, LARKD, keyaki_trees
+from tools import log
 from parsing import PCFG, KTBParser, LarkAdapter, Tree
 
 # from parser import PCFG, KTBParser, LarkAdapter
@@ -18,7 +19,7 @@ total = 100000
 targets = {0, 1, 2, 3, 4, 5, 6}
 
 def parse_test():
-    
+    total_r, total_p, total_f = 0, 0, 0
     ktbparser = KTBParser()
     pcfg = PCFG()
 
@@ -59,8 +60,12 @@ def parse_test():
         results = la.test(test_tokens, trees[i], verbose=True)
         if results is not None:
             prec, rcll, fscore = results
+            total_p += prec
+            total_r += rcll
+            total_f += fscore
             
-    print("Done.")
+    log(total_p, total_r, total_f)
+    log("Done.")
 
 if __name__ == "__main__":
     parse_test()
