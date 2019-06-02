@@ -4,11 +4,13 @@ Project: tools
 File Created: Friday, 31st May 2019 11:42:58 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Friday, 31st May 2019 3:04:58 pm
+Last Modified: Sunday, 2nd June 2019 3:54:06 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from typing import List, Any
 import random
+
+from .log import log
 
 def pick_random_item(items: List[Any], weights: List[float]) -> Any:
     # reference: https://medium.com/@peterkellyonline/weighted-random-selection-3ff222917eb6

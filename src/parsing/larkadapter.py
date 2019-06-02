@@ -4,12 +4,12 @@ Project: src
 File Created: Wednesday, 29th May 2019 11:04:49 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Sunday, 2nd June 2019 3:29:35 am
+Last Modified: Sunday, 2nd June 2019 3:55:13 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from pathlib import Path
 from collections import OrderedDict
-from typing import List, Set, Dict, Tuple
+from typing import List, Set, Dict, Tuple, Optional
 from copy import deepcopy
 
 from lark import Lark
@@ -19,16 +19,21 @@ from lark import UnexpectedCharacters
 
 from .tree import Tree
 
-from tools.dirs import LARKD, LARKIMGD
+from tools.dirs import LARKD, LARKIMGD, DATAD
+from tools import f1, log
 
-from .pcfg import PCFG, Rule
+from .pcfg import PCFG, Rule, create_rule
 from .disambig import Disambiguator
 
 
 class LarkAdapter():
+    
     def __init__(self, pcfg: PCFG):
         self.pcfg = pcfg
         self.savelark(LARKD / 'grammar.lark')
+        
+        log("Creating Lark Parser...")
+
         self.parser = Lark(
             self.larkstr(),
             start='sentence',
@@ -38,7 +43,7 @@ class LarkAdapter():
         self.disambig = Disambiguator(self.pcfg)
 
     def rules_larkstr(self, lhs: str, rules: OrderedDict) -> str:
-        # print("lhs", lhs)
+        # log("lhs", lhs)
         is_preterminal = lhs in self.pcfg.preterminals
         return lhs + ': ' + \
             ' | '.join(
@@ -61,21 +66,34 @@ class LarkAdapter():
         with open(file, 'w', encoding='utf8') as f:
             f.write(self.larkstr())
 
-    def test(self, tokens: List[str], true_tree: Tree, verbose: bool = False) -> float:
+    def test(self, tokens: List[str], true_tree: Tree, verbose: bool = False) \
+            -> Optional[Tuple[float, float, float]]:
         larktree = self.parse(tokens)
-        if verbose:
-            print(larktree.pretty())
+        if larktree is None:
+            return None
             
-        # larktree = self.pcfg.get_best_ambiguous(larktree)
-        self.disambig.disambiguate(larktree)
         if verbose:
-            print(larktree.pretty())
+            log("Pre disambiguation:")
+            log(larktree.pretty())
+
+        self.disambig.disambiguate(larktree)
+
+        if verbose:
+            log("Post disambiguation:")
+            log(larktree.pretty())
+
         tree = Tree.fromlark(larktree)
-        accuracy = self.calc_accuracy(tree, true_tree)
-        return accuracy
+        recall = self.calc_recall(tree, true_tree)
+        precision = self.calc_precision(tree, true_tree)
+        fscore = f1(recall, precision)
+
+        if verbose:
+            log(precision, recall, fscore)
+            log()
+        return recall, precision, fscore
 
     @staticmethod
-    def calc_accuracy(tree: Tree, true_tree: Tree) -> float:
+    def calc_precision(tree: Tree, true_tree: Tree) -> float:
         tree_stems, true_stems = tree.stems(), true_tree.stems()
         correct, total = 0, 0
         for i, (terminal, preterm) in enumerate(tree_stems):
@@ -85,10 +103,25 @@ class LarkAdapter():
             total += 1
 
         return correct / total
+    
+    @staticmethod
+    def calc_recall(tree: Tree, true_tree: Tree) -> float:
+        true_ruleset: Set[Rule] = set()
+        for node in true_tree.iterlevels():
+            true_ruleset.add(create_rule(node))
+        recalled, total = 0, 0
+        for node in tree.iterlevels():
+            rule = create_rule(node)
+            if rule in true_ruleset:
+                recalled += 1
+            total += 1
 
-    def parse(self, tokens: List[str]) -> LarkTree:
+        return recalled / total
+
+
+    def parse(self, tokens: List[str]) -> Optional[LarkTree]:
         try:
             return self.parser.parse(" ".join(tokens))
         except UnexpectedCharacters:
-            print("Lark does not support this sentence structure.")
-            return LarkTree('Error.', [])
+            log("Lark does not support this sentence structure.")
+            return None
