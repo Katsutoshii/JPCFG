@@ -4,7 +4,7 @@ Project: test
 File Created: Saturday, 1st June 2019 2:24:01 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Saturday, 1st June 2019 2:41:14 am
+Last Modified: Sunday, 2nd June 2019 12:59:30 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 import sys
@@ -12,7 +12,6 @@ from typing import List
 
 from segmenting import Segmenter
 from tools.dirs import TREEBANKD, LARKD, keyaki_trees
-from tools.eval import calculate_accuracy
 from parsing import KTBParser
 sys.setrecursionlimit(2000)
 
@@ -34,8 +33,9 @@ def simple_segment_test():
 def segment_test():
     ktbparser = KTBParser()
     seg = Segmenter()
+    test_ids = set() # set(range(10))
     
-    files = keyaki_trees('aozora*')
+    files = keyaki_trees('aozora_D*')
     
     token_lists = []
     texts = []
@@ -45,12 +45,25 @@ def segment_test():
         
         for i, tree in enumerate(ktbparser.parse(file)):
             tokens = ktbparser.tokens(tree)
-            print(tokens)
-            seg.train(tokens)
+            
             token_lists.append(tokens)
             texts.append("".join(tokens))
             
-        break
+            # if i not in test_ids:
+            #     seg.train(tokens)
+            seg.train(tokens)
     
-    tokens = seg.segment(texts[-1])
-    print(tokens)
+    for i in test_ids:
+
+        acc = seg.test(texts[i], token_lists[i])
+        print(acc)
+
+    tests = [
+        ("私は子供がいる", ["私", "は", "子供", "が", "い", "る"]),
+    ]
+    for test in tests:
+        acc = seg.test(test[0], test[1])
+        print(acc)
+
+if __name__ == "__main__":
+    segment_test()

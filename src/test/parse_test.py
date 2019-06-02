@@ -4,14 +4,13 @@ Project: test
 File Created: Saturday, 1st June 2019 2:23:28 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Saturday, 1st June 2019 2:37:38 am
+Last Modified: Sunday, 2nd June 2019 12:10:36 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 import sys
 from typing import List
 from pprint import pprint
 from tools.dirs import TREEBANKD, LARKD, keyaki_trees
-from tools.eval import calculate_accuracy
 from parsing import PCFG, KTBParser, LarkAdapter, Tree
 
 # from parser import PCFG, KTBParser, LarkAdapter
@@ -58,16 +57,6 @@ def parse_test():
     la = LarkAdapter(pcfg)
     for i, test_tokens in enumerate(test_tokens_lists):
     # for i, test_tokens in enumerate([test_tokens_lists[-1]]):
-        test_spaced = u" ".join(test_tokens)
-        print(test_spaced)
-        try:
-            parse = la.parser.parse(test_spaced)
-            print(parse)
-            tree = Tree.fromlark(parse)
-            print("our tree:", tree)
-            print("true tree:", trees[i])
-            accuracy = calculate_accuracy(tree, trees[i])
-            print("accuracy:", accuracy)
-        except Exception as e:
-            print("Lark error.")
+        acc = la.test(test_tokens, trees[i])
+        print(acc)
     print("Done.")

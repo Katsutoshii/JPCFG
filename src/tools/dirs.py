@@ -4,17 +4,18 @@ Project: src
 File Created: Wednesday, 22nd May 2019 11:09:30 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Friday, 31st May 2019 3:30:28 pm
+Last Modified: Sunday, 2nd June 2019 12:15:37 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from typing import Iterator
 from pathlib import Path
 
 CWD = Path.cwd()
-ROOTD = CWD.parent
+ROOTD = CWD
 SRCD = ROOTD / 'src'
 DATAD = ROOTD / 'data'
 LARKD = DATAD / 'lark'
+LARKIMGD = LARKD / 'images'
 KEYAKID = DATAD / 'KeyakiTreebank-1.1'
 TREEBANKD = KEYAKID / 'treebank'
 

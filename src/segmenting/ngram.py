@@ -4,21 +4,21 @@ Project: hw2
 File Created: Saturday, 20th April 2019 1:56:15 pm
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Saturday, 1st June 2019 2:48:50 am
+Last Modified: Sunday, 2nd June 2019 12:08:48 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from sys import argv
 from collections import defaultdict
 import math
-from typing import List
+from typing import List, Tuple
 
 from tools import pick_random_item
 
 class NGramsModel():
-    def __init__(self, n):
-        # type: (int) -> None
+    def __init__(self, n: int, l: float = 1):
         # constructor for the n-grams model
         self.n = n
+        self.l = l
 
         # counts keeps track of the number of occurrences of strings of size n
         self.alphabet = set()                           # type: set
@@ -46,27 +46,17 @@ class NGramsModel():
             self.precedent_counts[precedent] += 1
             self.sequence_counts[sequence] += 1
 
-    def smooth_on_line(self, line):
-        # type: (str) -> None
+    def smooth(self, symbols: List[str]):
         # reads in the line, adding all unseen precedents to the dictionary
-        symbols = line.strip().split()
         for precedent, symbols in self.sequences(symbols):
             if precedent not in self.precedent_counts:
                 self.precedent_counts[precedent] = 0
-
-    def smooth(self, filename: str) -> None:
-        # applies Laplace (add-one) smoothing to the model using the given file as test data
-        self.smoothed = True
-        with open(filename) as f:
-            for line in f:
-                self.smooth_on_line(line)
 
     def generate_words(self, n: int) -> List[str]:
         # generates n words using the model
         return [self.generate_word() for _ in range(n)]
 
-    def generate_word(self):
-        # type: () -> str
+    def generate_word(self) -> str:
         # generates a random word using the model
         m = self.n - 1
         word = ['#'] * m
@@ -86,19 +76,16 @@ class NGramsModel():
                 break
         return " ".join(word[m:-1])
         
-    def probability(self, precedent, sequence):
-        # type: (tuple, tuple) -> float
+    def probability(self, precedent: Tuple[str, ...], sequence: Tuple[str, ...]) -> float:
         # calculates the probability of a sequence given a precedent sequence
         # for bi-grams the precedent is only one character
         if self.smoothed:
-            # print float(self.sequence_counts[sequence] + 1), "/", float(self.precedent_counts[precedent] + len(self.precedent_counts))
             
-            return (self.sequence_counts[sequence] + 1) / (self.precedent_counts[precedent] + len(self.precedent_counts))
+            return (self.sequence_counts[sequence] + self.l) / (self.precedent_counts[precedent] + self.l * len(self.precedent_counts))
         else:
             return float(self.sequence_counts[sequence]) / float(self.precedent_counts[precedent])
 
-    def log_probability(self, symbols):
-        # type: (list) -> float
+    def log_probability(self, symbols: List[str]) -> float:
         # calculates the logarithmic probability of a sequence of symbols
         total_log_prob = 0.0
         
@@ -111,12 +98,10 @@ class NGramsModel():
 
         return total_log_prob
 
-    def perplexity(self, log_prob, num_samples):
-        # type: (float, int) -> (float)
+    def perplexity(self, log_prob: float, num_samples: int):
         return 2 ** (log_prob * (-1.0) / float(num_samples))
 
-    def evaluate_line(self, line):
-        # type: (str) -> tuple
+    def evaluate_line(self, line: str) -> Tuple[float, int]:
         # calculates the logarithmic probability of a given line
         word = line.strip()
         symbols = word.split()

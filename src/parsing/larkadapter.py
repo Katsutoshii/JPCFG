@@ -4,15 +4,18 @@ Project: src
 File Created: Wednesday, 29th May 2019 11:04:49 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Saturday, 1st June 2019 12:56:53 am
+Last Modified: Sunday, 2nd June 2019 12:38:34 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from pathlib import Path
 from collections import OrderedDict
-from typing import List, Set
+from typing import List, Set, Dict, Tuple
+from copy import deepcopy
 
 from lark import Lark
 from lark.tree import pydot__tree_to_png    # Just a neat utility function
+from lark.tree import Tree as LarkTree
+from .tree import Tree
 
 from tools.dirs import LARKD
 
@@ -22,11 +25,11 @@ from .pcfg import PCFG, Rule
 class LarkAdapter():
     def __init__(self, pcfg: PCFG):
         self.pcfg = pcfg
-        self.savelark(LARKD / 'test1.lark')
+        self.savelark(LARKD / 'grammar.lark')
         self.parser = Lark(
             self.larkstr(),
             start='sentence',
-            # ambiguity='explicit',
+            ambiguity='explicit',
             parser='earley'
         )
 
@@ -53,3 +56,24 @@ class LarkAdapter():
     def savelark(self, file: Path):
         with open(file, 'w', encoding='utf8') as f:
             f.write(self.larkstr())
+
+    def test(self, tokens: List[str], true_tree: Tree) -> float:
+        larktree = self.parse(tokens)
+        tree = Tree.fromlark(larktree)
+        accuracy = self.calc_accuracy(tree, true_tree)
+        return accuracy
+
+    @staticmethod
+    def calc_accuracy(tree: Tree, true_tree: Tree) -> float:
+        tree_stems, true_stems = tree.stems(), true_tree.stems()
+        correct, total = 0, 0
+        for i, (terminal, preterm) in enumerate(tree_stems):
+            true_term, true_preterm = tree_stems[i]
+            if preterm.data == true_preterm.data:
+                correct += 1
+            total += 1
+
+        return correct / total
+
+    def parse(self, tokens: List[str]) -> LarkTree:
+        return self.parser.parse(" ".join(tokens))
