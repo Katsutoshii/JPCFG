@@ -4,12 +4,11 @@ Project: test
 File Created: Saturday, 1st June 2019 2:23:28 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Sunday, 2nd June 2019 12:10:36 am
+Last Modified: Sunday, 2nd June 2019 3:11:44 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 import sys
 from typing import List
-from pprint import pprint
 from tools.dirs import TREEBANKD, LARKD, keyaki_trees
 from parsing import PCFG, KTBParser, LarkAdapter, Tree
 
@@ -27,7 +26,7 @@ def parse_test():
     test_texts: List[str] = []
     trees = []
     
-    files = keyaki_trees('aozora*')
+    files = keyaki_trees('aozora_A*')
     # files = keyaki_trees('test')
     
     for _, file in enumerate(files):
@@ -51,12 +50,15 @@ def parse_test():
             test_tokens_lists.append(tokens)
             test_texts.append(text)
             trees.append(tree)
-        break
 
     # lark test
+    pcfg.calc_probs()
     la = LarkAdapter(pcfg)
     for i, test_tokens in enumerate(test_tokens_lists):
     # for i, test_tokens in enumerate([test_tokens_lists[-1]]):
-        acc = la.test(test_tokens, trees[i])
+        acc = la.test(test_tokens, trees[i], verbose=True)
         print(acc)
     print("Done.")
+
+if __name__ == "__main__":
+    parse_test()

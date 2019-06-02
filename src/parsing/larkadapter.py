@@ -4,7 +4,7 @@ Project: src
 File Created: Wednesday, 29th May 2019 11:04:49 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Sunday, 2nd June 2019 12:38:34 am
+Last Modified: Sunday, 2nd June 2019 3:29:35 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from pathlib import Path
@@ -15,11 +15,14 @@ from copy import deepcopy
 from lark import Lark
 from lark.tree import pydot__tree_to_png    # Just a neat utility function
 from lark.tree import Tree as LarkTree
+from lark import UnexpectedCharacters
+
 from .tree import Tree
 
-from tools.dirs import LARKD
+from tools.dirs import LARKD, LARKIMGD
 
 from .pcfg import PCFG, Rule
+from .disambig import Disambiguator
 
 
 class LarkAdapter():
@@ -32,6 +35,7 @@ class LarkAdapter():
             ambiguity='explicit',
             parser='earley'
         )
+        self.disambig = Disambiguator(self.pcfg)
 
     def rules_larkstr(self, lhs: str, rules: OrderedDict) -> str:
         # print("lhs", lhs)
@@ -57,8 +61,15 @@ class LarkAdapter():
         with open(file, 'w', encoding='utf8') as f:
             f.write(self.larkstr())
 
-    def test(self, tokens: List[str], true_tree: Tree) -> float:
+    def test(self, tokens: List[str], true_tree: Tree, verbose: bool = False) -> float:
         larktree = self.parse(tokens)
+        if verbose:
+            print(larktree.pretty())
+            
+        # larktree = self.pcfg.get_best_ambiguous(larktree)
+        self.disambig.disambiguate(larktree)
+        if verbose:
+            print(larktree.pretty())
         tree = Tree.fromlark(larktree)
         accuracy = self.calc_accuracy(tree, true_tree)
         return accuracy
@@ -76,4 +87,8 @@ class LarkAdapter():
         return correct / total
 
     def parse(self, tokens: List[str]) -> LarkTree:
-        return self.parser.parse(" ".join(tokens))
+        try:
+            return self.parser.parse(" ".join(tokens))
+        except UnexpectedCharacters:
+            print("Lark does not support this sentence structure.")
+            return LarkTree('Error.', [])

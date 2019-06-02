@@ -4,11 +4,12 @@ Project: src
 File Created: Monday, 27th May 2019 12:09:23 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Saturday, 1st June 2019 1:37:37 am
+Last Modified: Sunday, 2nd June 2019 1:25:47 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from typing import List, Any, Callable, Iterator, Tuple
 from lark.tree import Tree as LarkTree
+from lark import Token 
 
 class Tree():
     # simple tree data structure for holding the grammer trees
@@ -110,19 +111,7 @@ class Tree():
                 stack += curr.children
                 larkstack += larkcurr.children
         return root
-
-    # def tolark(self) -> LarkTree:
-    #     stack = [self]
-    #     larkroot = LarkTree(self.data, [])
-    #     larkstack = [larkroot]
-
-    #     while stack:
-    #         curr = stack.pop()
-    #         larkcurr = larkstack.pop()
-
-    #         stack += curr.children
-    #         larkstack += larkcurr.children
-    #     return root
+        
 
 if __name__ == "__main__":
     teststr = """

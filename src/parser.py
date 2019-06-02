@@ -4,7 +4,7 @@ Project: src
 File Created: Saturday, 1st June 2019 11:26:22 pm
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Sunday, 2nd June 2019 12:37:45 am
+Last Modified: Sunday, 2nd June 2019 1:39:20 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from pathlib import Path
@@ -34,7 +34,8 @@ class JapaneseParser():
         # trains the parser on a list of files
         for _, file in enumerate(files):
             self.train_on_file(file)
-        
+            
+        self.pcfg.calc_probs()
         self.larkadapter = LarkAdapter(self.pcfg)
             
     def train_on_file(self, file: Path):

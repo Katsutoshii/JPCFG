@@ -4,21 +4,26 @@ Project: src
 File Created: Wednesday, 22nd May 2019 11:04:27 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Sunday, 2nd June 2019 12:40:11 am
+Last Modified: Sunday, 2nd June 2019 3:00:16 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from math import log2
 from typing import Dict, List, Set, Union, Tuple
 from collections import defaultdict, namedtuple, OrderedDict
+from lark import Token
+from lark.tree import Tree as LarkTree
 
 from .tree import Tree
 
 
 Rule = namedtuple("Rule", ["lhs", "rhs"])
 
-def create_rule(node: Tree):
-    lhs = node.data
-    rhs = [c.data for c in node.children]
+def create_rule(node: Union[Tree, LarkTree, Token]):
+    # creates a rule based on a tree node
+    lhs = node.type if isinstance(node, Token) else node.data
+    rhs = [str(node)] if isinstance(node, Token) else \
+        [c.type if isinstance(c, Token) else c.data
+         for c in node.children]
     return Rule(lhs, tuple(rhs))
 
 class PCFG():
@@ -48,6 +53,7 @@ class PCFG():
 
     def add(self, rule: Rule) -> None:
         self.counts[rule] += 1
+        self.counts[rule.lhs] += 1
         self.rules[rule.lhs][rule] = None
 
     def add_terminal(self, rule: Rule) -> None:
@@ -56,40 +62,7 @@ class PCFG():
         self.preterminals[rule.lhs][rule.rhs[0]] = None
 
     def calc_probs(self):
-        for rule in self.rules.values():
-            self.probabilities[rule] = self.counts[rule] / self.counts[rule.lhs]
-            
-    def get_best_ambiguous(self, tree: Tree):
-        path = []
-        prob = 0.0
-        num_ambig = 0
-        path_probs: Dict[Tuple, float] = {}
-
-        for node in tree.iterlevels():
-            if node.data == '_ambig':
-                num_ambig += 1
-                for child in node.children:
-                    path.append(child)
-                    curr_path = tuple(path)
-                    # pick this path if we haven't taken it yet
-                    if curr_path not in path_probs:
-                        path_probs[curr_path] = prob
-                        break
-                    del path[-1]
-            else:
-                rule = create_rule(node)
-                prob += log2(self.probabilities[rule])
-
-        # if no ambiguity, just return the prob
-        if not path:
-            return prob
-
-        # otherwise find the best path
-        def get_prob(path):
-            return path_probs[path]
-        best_path = max(path_probs, key=get_prob)
-        return best_path
+        for ruleset in self.rules.values():
+            for rule in ruleset:
+                self.probabilities[rule] = self.counts[rule] / self.counts[rule.lhs]
     
-    @staticmethod
-    def disambiguate(tree: Tree, choices: Tuple[str, ...]):
-        pass
