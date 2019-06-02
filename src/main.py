@@ -4,10 +4,21 @@ Project: src
 File Created: Wednesday, 22nd May 2019 11:04:39 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Saturday, 1st June 2019 2:38:03 am
+Last Modified: Sunday, 2nd June 2019 4:39:13 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
-from test import segment_test, parse_test
-
+from sys import argv, path
+from test import segment_test, parse_test, full_test
 if __name__ == "__main__":
-    segment_test()
+    path.append('.')
+    modes = {
+        'pcfg': parse_test,
+        'seg': segment_test,
+        'full': full_test
+    }
+    try:
+        mode = argv[1]
+        if mode not in modes:
+            raise Exception
+    except Exception as e:
+        print("Usage: python src/main.py <pcfg|seg|full>")

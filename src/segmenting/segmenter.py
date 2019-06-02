@@ -4,11 +4,12 @@ Project: src
 File Created: Friday, 31st May 2019 11:47:22 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Sunday, 2nd June 2019 12:56:13 am
+Last Modified: Sunday, 2nd June 2019 4:33:18 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from collections import defaultdict
 from typing import DefaultDict, List, Set
+from tools import f1, log
 
 from .ngram import NGramsModel
 
@@ -68,18 +69,25 @@ class Segmenter():
             return prob
         return max(segmentations, key=calc_prob)
 
-    def test(self, text: str, true_tokens: List[str]) -> float:
+    def test(self, text: str, true_tokens: List[str], verbose: bool = False) -> Tuple[float, float, float]:
         for token in true_tokens:
             if token not in self.vocab:
                 print(f"Warning: {token} not in vocab.")
                 
         self.ngram.smooth(true_tokens)
         tokens = self.segment(text)
-        accuracy = self.calc_accuracy(tokens, true_tokens)
-        return accuracy
+        recall = self.calc_recall(tokens, true_tokens)
+        precision = self.calc_precision(tokens, true_tokens)
+        fscore = f1(recall, precision)
+
+        if verbose:
+            log(tokens)
+            log(precision, recall, fscore)
+            log()
+        return recall, precision, fscore
 
     @staticmethod
-    def calc_accuracy(tokens: List[str], true_tokens: List[str]) -> float:
+    def calc_recall(tokens: List[str], true_tokens: List[str]) -> float:
         true_tokens_set = set(true_tokens)
         correct = 0
         for token in tokens:

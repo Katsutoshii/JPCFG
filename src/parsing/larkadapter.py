@@ -4,7 +4,7 @@ Project: src
 File Created: Wednesday, 29th May 2019 11:04:49 am
 Author: Josiah Putman (joshikatsu@gmail.com)
 -----
-Last Modified: Sunday, 2nd June 2019 4:03:27 am
+Last Modified: Sunday, 2nd June 2019 4:34:02 am
 Modified By: Josiah Putman (joshikatsu@gmail.com)
 '''
 from pathlib import Path
@@ -15,7 +15,7 @@ from copy import deepcopy
 from lark import Lark
 from lark.tree import pydot__tree_to_png    # Just a neat utility function
 from lark.tree import Tree as LarkTree
-from lark import UnexpectedCharacters
+from lark import UnexpectedCharacters, ParseError
 
 from .tree import Tree
 
@@ -72,9 +72,9 @@ class LarkAdapter():
         if larktree is None:
             return None
             
-        if verbose:
-            log("Pre disambiguation:")
-            log(larktree.pretty())
+        # if verbose:
+        #     log("Pre disambiguation:")
+        #     log(larktree.pretty())
 
         self.disambig.disambiguate(larktree)
 
@@ -90,34 +90,27 @@ class LarkAdapter():
         if verbose:
             log(precision, recall, fscore)
             log()
-        return recall, precision, fscore
+        return precision, recall, fscore
+
+    @staticmethod
+    def ruleset(tree: Tree):
+        ruleset: Set[Rule] = set()
+        for node in tree.iterlevels():
+            ruleset.add(create_rule(node))
+        return ruleset
 
     @staticmethod
     def calc_precision(tree: Tree, true_tree: Tree) -> float:
-        true_ruleset: Set[Rule] = set()
-        correct, total = 0, 0
-        for node in true_tree.iterlevels():
-            true_ruleset.add(create_rule(node))
-            total += 1
-        for node in tree.iterlevels():
-            rule = create_rule(node)
-            if rule in true_ruleset:
-                correct += 1
-
+        ruleset, true_ruleset = LarkAdapter.ruleset(tree), LarkAdapter.ruleset(true_tree)
+        correct = len(true_ruleset.intersection(ruleset))
+        total = len(ruleset)
         return correct / total
     
     @staticmethod
     def calc_recall(tree: Tree, true_tree: Tree) -> float:
-        true_ruleset: Set[Rule] = set()
-        correct, total = 0, 0
-        for node in true_tree.iterlevels():
-            true_ruleset.add(create_rule(node))
-        for node in tree.iterlevels():
-            rule = create_rule(node)
-            if rule in true_ruleset:
-                correct += 1
-            total += 1
-
+        ruleset, true_ruleset = LarkAdapter.ruleset(tree), LarkAdapter.ruleset(true_tree)
+        correct = len(true_ruleset.intersection(ruleset))
+        total = len(true_ruleset)
         return correct / total
 
 
@@ -125,5 +118,8 @@ class LarkAdapter():
         try:
             return self.parser.parse(" ".join(tokens))
         except UnexpectedCharacters:
+            log("Lark does not support this sentence structure.")
+            return None
+        except ParseError:
             log("Lark does not support this sentence structure.")
             return None
